@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.DictLongParkingMapper">
+    <resultMap id="DictLongParkingResultMap" type="com.park.cloud.common.domain.po.dict.DictLongParkingPO">
+        <result column="plateNumber" property="plateNumber"/>
+        <result column="plateType" property="plateType"/>
+        <result column="startParkingTime" property="startParkingTime"/>
+        <result column="parkTime" property="parkTime"/>
+        <result column="parkingName" property="parkingName"/>
+        <result column="parkingType" property="parkingType"/>
+        <result column="berthCode" property="berthCode"/>
+    </resultMap>
+    <select id="selectLongParking" parameterType="com.park.cloud.common.domain.dto.cms.DictLongParkingDto"
+            resultMap="DictLongParkingResultMap">
+        select
+        a.plate_number as plateNumber,
+        a.plate_type as plateType,
+        a.start_parking_time as startParkingTime,
+        TIMESTAMPDIFF(MINUTE, a.start_parking_time, now()) / 60 as parkTime,
+        if(a.bargain_order_type = 0, c.parking_name, d.section_name) as parkingName,
+        c.parking_type as parkingType,
+        b.berth_code as berthCode
+        from tra_bargain_order a
+        left join dict_berth_city b on a.berth_code = b.berth_code
+        inner join dict_parking_city c on a.park_code = c.park_code
+        left join dict_section d on b.section_id = d.section_id
+        <where>
+            order_status = 1 and a.park_time is not null
+            <if test="plateNumber != null and plateNumber != ''">
+                and a.plate_number = #{plateNumber}
+            </if>
+            <if test="parkingName != null and parkingName != ''">
+                and (c.parking_name = #{parkingName} or d.canton_name = #{parkingName})
+            </if>
+            <if test="parkStartTime != null">
+                and TIMESTAMPDIFF(MINUTE, a.start_parking_time, now()) > #{parkStartTime}
+            </if>
+            <if test="parkEndTime != null">
+                and #{parkEndTime} > TIMESTAMPDIFF(MINUTE, a.start_parking_time, now())
+            </if>
+            <if test="startParkingTime != null and endParkingTime != null">
+                and a.start_parking_time between #{startParkingTime} and #{endParkingTime}
+            </if>
+        </where>
+    </select>
+
+</mapper>

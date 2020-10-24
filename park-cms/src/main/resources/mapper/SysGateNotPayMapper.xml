@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.SysGateNotPayMapper">
+    <resultMap id="SysGateResultMap" type="com.park.cloud.common.domain.po.sys.SysGateNotPayPO">
+        <result column="id" property="id"/>
+        <result column="tra_bargain_order_id" property="traBargainOrderId"/>
+        <result column="controller_serial_number" property="controllerSerialNumber"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.park.cloud.common.domain.po.sys.SysGateNotPayPO">
+        insert into sys_gate_not_pay (tra_bargain_order_id, controller_serial_number, add_time)
+        values (#{traBargainOrderId}, #{controllerSerialNumber}, now())
+    </insert>
+
+    <update id="update" parameterType="com.park.cloud.common.domain.po.sys.SysGateNotPayPO">
+        update sys_gate_not_pay
+        set `status` = 1
+        where tra_bargain_order_id = #{traBargainOrderId} and `status` = 0 and add_time between date_sub(now(), interval 5 minute) and now()
+    </update>
+    <select id="selectByOrderId" parameterType="java.lang.Long" resultType="com.park.cloud.common.domain.vo.cms.SysGateNotPayVO">
+        select tra_bargain_order_id traBargainOrderId, controller_serial_number controllerSerialNumber, channel
+        from sys_gate_not_pay
+        where tra_bargain_order_id = #{traBargainOrderId}
+          and `status` = 0
+          and add_time between date_sub(now(), interval 16 minute) and now()
+        order by id desc
+        limit 1
+    </select>
+</mapper>

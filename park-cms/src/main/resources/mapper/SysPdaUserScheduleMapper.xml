@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.SysPdaUserScheduleMapper">
+    <resultMap id="SysPdaUserScheduleResultMap" type="com.park.cloud.common.domain.po.sys.SysPdaUserSchedulePO">
+        <result column="pda_user_team_id" property="pdaUserTeamId"/>
+        <result column="team_name" property="pdaUserTeamName"/>
+        <collection property="scheduleMonth" ofType="com.park.cloud.common.domain.vo.cms.SysPdaUserScheduleMonthVO" column="{pdaUserTeamId=pda_user_team_id, year=year}" select="selectScheduleMonth">
+            <result column="month"/>
+            <result column="scheduleStatus"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="SysPdaUserScheduleDetailResultMap" type="com.park.cloud.common.domain.po.sys.SysPdaUserScheduleDetailPO">
+        <result column="pda_user_id" property="pdaUserId"/>
+        <result column="pda_user_name" property="pdaUserName"/>
+        <collection property="scheduleDay" ofType="com.park.cloud.common.domain.vo.cms.SysPdaUserScheduleDayVO">
+            <result column="pda_user_schedule_id" property="pdaUserScheduleId"/>
+            <result column="day" property="day"/>
+            <result column="pda_schedule_name" property="pdaScheduleName"/>
+            <result column="pda_schedule_id" property="pdaScheduleId"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectUserSchedule" parameterType="com.park.cloud.common.domain.dto.cms.SysPdaUserScheduleDto"
+            resultMap="SysPdaUserScheduleResultMap">
+        select
+        any_value(a.pda_user_team_id) as pda_user_team_id,
+        any_value(a.team_name) as team_name,
+        #{year} as year
+        from sys_pda_user_team a
+        <where>
+            <if test="pdaUserTeamName != null and pdaUserTeamName != ''">
+                and a.team_name like concat('%', #{pdaUserTeamName},'%')
+            </if>
+            <if test="cityId != null">
+                and a.city_id = #{cityId}
+            </if>
+            <if test="cantonId != null">
+                and a.canton_id = #{cantonId}
+            </if>
+            <if test="areaId != null">
+                and a.area_id = #{areaId}
+            </if>
+            <if test="sectionId != null">
+                and a.section_id = #{sectionId}
+            </if>
+        </where>
+        group by a.pda_user_team_id
+    </select>
+
+    <select id="selectScheduleMonth" parameterType="java.util.Map" resultType="com.park.cloud.common.domain.vo.cms.SysPdaUserScheduleMonthVO">
+        select any_value(c.`month`) as month,
+        if (isnull(any_value(c.pda_schedule_id)),
+#         if(PERIOD_DIFF(date_format(now(), '%Y%m'), date_format(CONCAT(any_value(c.`year`),'-', any_value(c.`month`), '-', any_value(c.day)),
+#         '%Y%m')) > 0, 1, 3),
+            null,
+        if(PERIOD_DIFF(date_format(now(), '%Y%m'), date_format(CONCAT(any_value(c.`year`),'-', any_value(c.`month`), '-', any_value(c.day)),
+        '%Y%m')) > 0, 2, 4)
+            ) as scheduleStatus
+        from sys_pda_user b
+                 left join sys_pda_user_schedule c on b.pda_user_id = c.pda_user_id
+        where b.pda_user_team_id = #{pdaUserTeamId}
+          and (c.`year` = #{year} or c.`year` is null)
+        group by c.`month`
+    </select>
+
+    <select id="selectUserScheduleDetail" parameterType="com.park.cloud.common.domain.dto.cms.SysPdaUserScheduleDto"
+            resultMap="SysPdaUserScheduleDetailResultMap">
+        select b.pda_user_id,
+               b.pda_user_name,
+               c.`day`,
+               c.id as pda_user_schedule_id,
+               d.pda_schedule_name,
+               d.pda_schedule_id
+        from sys_pda_user_team a
+                 right join sys_pda_user b on a.pda_user_team_id = b.pda_user_team_id
+                 left join (select `day`,id,pda_user_id,pda_schedule_id from sys_pda_user_schedule where (`year` = #{year} or `year` is null) and (`month` = #{month} or `month` is null)) c
+                     on b.pda_user_id = c.pda_user_id
+                 left join sys_pda_schedule d
+                     on c.pda_schedule_id = d.pda_schedule_id
+        where a.pda_user_team_id = #{pdaUserTeamId}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.park.cloud.common.domain.po.sys.SysPdaUserSchedulePO">
+        insert into sys_pda_user_schedule (pda_user_id, pda_schedule_id, year, month, day, add_time, add_user)
+        values (#{pdaUserId}, #{pdaScheduleId}, #{year}, #{month}, #{day}, #{addTime}, #{addUser})
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.park.cloud.common.domain.po.sys.SysPdaUserScheduleDetailPO">
+        delete
+        from sys_pda_user_schedule
+        where id = #{pdaUserScheduleId}
+    </delete>
+</mapper>

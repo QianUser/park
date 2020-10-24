@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.DictBerthCityPOMapper">
+  <resultMap id="BaseResultMap" type="com.park.cloud.common.domain.po.dict.DictBerthCityPO">
+    <id column="berth_id" jdbcType="INTEGER" property="berthId" />
+    <result column="berth_code" jdbcType="VARCHAR" property="berthCode" />
+    <result column="sn_code" jdbcType="VARCHAR" property="snCode" />
+    <result column="area_id" jdbcType="INTEGER" property="areaId" />
+    <result column="section_id" jdbcType="INTEGER" property="sectionId" />
+    <result column="canton_id" jdbcType="INTEGER" property="cantonId" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="parking_id" jdbcType="INTEGER" property="parkingId" />
+    <result column="company_id" jdbcType="INTEGER" property="companyId" />
+    <result column="line_direction" jdbcType="INTEGER" property="lineDirection" />
+    <result column="berth_status" jdbcType="INTEGER" property="berthStatus" />
+    <result column="park_status" jdbcType="INTEGER" property="parkStatus" />
+    <result column="status_updte_date" jdbcType="TIMESTAMP" property="statusUpdteDate" />
+    <result column="berth_longitude" jdbcType="VARCHAR" property="berthLongitude" />
+    <result column="berth_latitude" jdbcType="VARCHAR" property="berthLatitude" />
+    <result column="set_position" jdbcType="INTEGER" property="setPosition" />
+    <result column="berth_remark" jdbcType="VARCHAR" property="berthRemark" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="add_user" jdbcType="INTEGER" property="addUser" />
+    <result column="use_way" jdbcType="INTEGER" property="useWay" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    berth_id, berth_code, sn_code, area_id, section_id, canton_id, city_id, parking_id, company_id,
+    line_direction, berth_status, park_status, status_updte_date, berth_longitude, berth_latitude,
+    set_position, berth_remark, add_time, add_user, use_way
+  </sql>
+  <select id="selectByExample" parameterType="com.park.cloud.common.domain.po.dict.DictBerthCityPOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from dict_berth_city
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dict_berth_city
+    where berth_id = #{berthId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dict_berth_city
+    where berth_id = #{berthId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.park.cloud.common.domain.po.dict.DictBerthCityPOExample">
+    delete from dict_berth_city
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.park.cloud.common.domain.po.dict.DictBerthCityPO">
+    insert into dict_berth_city (berth_id, berth_code, sn_code,  area_id,
+      section_id, canton_id, city_id,
+      parking_id, company_id, line_direction,
+      berth_status, park_status, status_updte_date,
+      berth_longitude, berth_latitude, set_position,
+      berth_remark, add_time, add_user,
+      use_way)
+    values (#{berthId,jdbcType=INTEGER}, #{berthCode,jdbcType=VARCHAR}, #{snCode,jdbcType=VARCHAR},  #{areaId,jdbcType=INTEGER},
+      #{sectionId,jdbcType=INTEGER}, #{cantonId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER},
+      #{parkingId,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, #{lineDirection,jdbcType=INTEGER},
+      #{berthStatus,jdbcType=INTEGER}, #{parkStatus,jdbcType=INTEGER}, #{statusUpdteDate,jdbcType=TIMESTAMP},
+      #{berthLongitude,jdbcType=VARCHAR}, #{berthLatitude,jdbcType=VARCHAR}, #{setPosition,jdbcType=INTEGER},
+      #{berthRemark,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{addUser,jdbcType=INTEGER},
+      #{useWay,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.park.cloud.common.domain.po.dict.DictBerthCityPO">
+    insert into dict_berth_city
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="berthId != null">
+        berth_id,
+      </if>
+      <if test="berthCode != null">
+        berth_code,
+      </if>
+      <if test="snCode != null">
+        sn_code,
+      </if>
+      <if test="areaId != null">
+        area_id,
+      </if>
+      <if test="sectionId != null">
+        section_id,
+      </if>
+      <if test="cantonId != null">
+        canton_id,
+      </if>
+      <if test="cityId != null">
+        city_id,
+      </if>
+      <if test="parkingId != null">
+        parking_id,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="lineDirection != null">
+        line_direction,
+      </if>
+      <if test="berthStatus != null">
+        berth_status,
+      </if>
+      <if test="parkStatus != null">
+        park_status,
+      </if>
+      <if test="statusUpdteDate != null">
+        status_updte_date,
+      </if>
+      <if test="berthLongitude != null">
+        berth_longitude,
+      </if>
+      <if test="berthLatitude != null">
+        berth_latitude,
+      </if>
+      <if test="setPosition != null">
+        set_position,
+      </if>
+      <if test="berthRemark != null">
+        berth_remark,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="addUser != null">
+        add_user,
+      </if>
+      <if test="useWay != null">
+        use_way,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="berthId != null">
+        #{berthId,jdbcType=INTEGER},
+      </if>
+      <if test="berthCode != null">
+        #{berthCode,jdbcType=VARCHAR},
+      </if>
+      <if test="snCode != null">
+        #{snCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="sectionId != null">
+        #{sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="cantonId != null">
+        #{cantonId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="parkingId != null">
+        #{parkingId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="lineDirection != null">
+        #{lineDirection,jdbcType=INTEGER},
+      </if>
+      <if test="berthStatus != null">
+        #{berthStatus,jdbcType=INTEGER},
+      </if>
+      <if test="parkStatus != null">
+        #{parkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="statusUpdteDate != null">
+        #{statusUpdteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="berthLongitude != null">
+        #{berthLongitude,jdbcType=VARCHAR},
+      </if>
+      <if test="berthLatitude != null">
+        #{berthLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="setPosition != null">
+        #{setPosition,jdbcType=INTEGER},
+      </if>
+      <if test="berthRemark != null">
+        #{berthRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null">
+        #{addUser,jdbcType=INTEGER},
+      </if>
+      <if test="useWay != null">
+        #{useWay,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.park.cloud.common.domain.po.dict.DictBerthCityPOExample" resultType="java.lang.Long">
+    select count(*) from dict_berth_city
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update dict_berth_city
+    <set>
+      <if test="record.berthId != null">
+        berth_id = #{record.berthId,jdbcType=INTEGER},
+      </if>
+      <if test="record.berthCode != null">
+        berth_code = #{record.berthCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.snCode != null">
+        sn_code = #{record.snCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areaId != null">
+        area_id = #{record.areaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sectionId != null">
+        section_id = #{record.sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cantonId != null">
+        canton_id = #{record.cantonId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cityId != null">
+        city_id = #{record.cityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.parkingId != null">
+        parking_id = #{record.parkingId,jdbcType=INTEGER},
+      </if>
+      <if test="record.companyId != null">
+        company_id = #{record.companyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.lineDirection != null">
+        line_direction = #{record.lineDirection,jdbcType=INTEGER},
+      </if>
+      <if test="record.berthStatus != null">
+        berth_status = #{record.berthStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.parkStatus != null">
+        park_status = #{record.parkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.statusUpdteDate != null">
+        status_updte_date = #{record.statusUpdteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.berthLongitude != null">
+        berth_longitude = #{record.berthLongitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.berthLatitude != null">
+        berth_latitude = #{record.berthLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.setPosition != null">
+        set_position = #{record.setPosition,jdbcType=INTEGER},
+      </if>
+      <if test="record.berthRemark != null">
+        berth_remark = #{record.berthRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null">
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addUser != null">
+        add_user = #{record.addUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.useWay != null">
+        use_way = #{record.useWay,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update dict_berth_city
+    set berth_id = #{record.berthId,jdbcType=INTEGER},
+    berth_code = #{record.berthCode,jdbcType=VARCHAR},
+    sn_code = #{record.snCode,jdbcType=VARCHAR},
+    area_id = #{record.areaId,jdbcType=INTEGER},
+    section_id = #{record.sectionId,jdbcType=INTEGER},
+    canton_id = #{record.cantonId,jdbcType=INTEGER},
+    city_id = #{record.cityId,jdbcType=INTEGER},
+    parking_id = #{record.parkingId,jdbcType=INTEGER},
+    company_id = #{record.companyId,jdbcType=INTEGER},
+    line_direction = #{record.lineDirection,jdbcType=INTEGER},
+    berth_status = #{record.berthStatus,jdbcType=INTEGER},
+    park_status = #{record.parkStatus,jdbcType=INTEGER},
+    status_updte_date = #{record.statusUpdteDate,jdbcType=TIMESTAMP},
+    berth_longitude = #{record.berthLongitude,jdbcType=VARCHAR},
+    berth_latitude = #{record.berthLatitude,jdbcType=VARCHAR},
+    set_position = #{record.setPosition,jdbcType=INTEGER},
+    berth_remark = #{record.berthRemark,jdbcType=VARCHAR},
+    add_time = #{record.addTime,jdbcType=TIMESTAMP},
+    add_user = #{record.addUser,jdbcType=INTEGER},
+    use_way = #{record.useWay,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.park.cloud.common.domain.po.dict.DictBerthCityPO">
+    update dict_berth_city
+    <set>
+      <if test="berthCode != null">
+        berth_code = #{berthCode,jdbcType=VARCHAR},
+      </if>
+      <if test="snCode != null">
+        sn_code = #{snCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null">
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="sectionId != null">
+        section_id = #{sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="cantonId != null">
+        canton_id = #{cantonId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null">
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="parkingId != null">
+        parking_id = #{parkingId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null">
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="lineDirection != null">
+        line_direction = #{lineDirection,jdbcType=INTEGER},
+      </if>
+      <if test="berthStatus != null">
+        berth_status = #{berthStatus,jdbcType=INTEGER},
+      </if>
+      <if test="parkStatus != null">
+        park_status = #{parkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="statusUpdteDate != null">
+        status_updte_date = #{statusUpdteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="berthLongitude != null">
+        berth_longitude = #{berthLongitude,jdbcType=VARCHAR},
+      </if>
+      <if test="berthLatitude != null">
+        berth_latitude = #{berthLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="setPosition != null">
+        set_position = #{setPosition,jdbcType=INTEGER},
+      </if>
+      <if test="berthRemark != null">
+        berth_remark = #{berthRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null">
+        add_user = #{addUser,jdbcType=INTEGER},
+      </if>
+      <if test="useWay != null">
+        use_way = #{useWay,jdbcType=INTEGER},
+      </if>
+    </set>
+    where berth_id = #{berthId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.park.cloud.common.domain.po.dict.DictBerthCityPO">
+    update dict_berth_city
+    set berth_code = #{berthCode,jdbcType=VARCHAR},
+      sn_code = #{snCode,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=INTEGER},
+      section_id = #{sectionId,jdbcType=INTEGER},
+      canton_id = #{cantonId,jdbcType=INTEGER},
+      city_id = #{cityId,jdbcType=INTEGER},
+      parking_id = #{parkingId,jdbcType=INTEGER},
+      company_id = #{companyId,jdbcType=INTEGER},
+      line_direction = #{lineDirection,jdbcType=INTEGER},
+      berth_status = #{berthStatus,jdbcType=INTEGER},
+      park_status = #{parkStatus,jdbcType=INTEGER},
+      status_updte_date = #{statusUpdteDate,jdbcType=TIMESTAMP},
+      berth_longitude = #{berthLongitude,jdbcType=VARCHAR},
+      berth_latitude = #{berthLatitude,jdbcType=VARCHAR},
+      set_position = #{setPosition,jdbcType=INTEGER},
+      berth_remark = #{berthRemark,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      add_user = #{addUser,jdbcType=INTEGER},
+      use_way = #{useWay,jdbcType=INTEGER}
+    where berth_id = #{berthId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByDto" parameterType="com.park.cloud.common.domain.dto.cms.DictBerthCityDto"
+          resultType="com.park.cloud.common.domain.vo.cms.DictBerthCityVO">
+    SELECT
+    a.berth_id as berthId
+    ,a.berth_code as berthCode
+    ,a.sn_code as snCode
+    ,a.section_id as sectionId
+    ,c.section_name as sectionName
+    ,a.canton_id as cantonId
+    ,d.canton_name as cantonName
+    ,a.area_id as areaId
+    ,e.area_name as areaName
+    ,a.line_direction as lineDirection
+    ,a.berth_status as berthStatus
+    ,a.park_status as parkStatus
+    ,a.set_position as setPosition
+    ,a.berth_remark as berthRemark
+    ,a.add_time as addTime
+    ,b.user_true_name as addUserName
+    FROM dict_berth_city a
+    left join sys_user b on b.user_id = a.add_user
+    left join dict_section c on c.section_id = a.section_id
+    left join dict_canton d on d.canton_id = a.canton_id
+    left join dict_area e on e.area_id = a.area_id
+    <where>
+      1=1
+      <if test="sectionId != null">
+        and a.section_id = #{sectionId}
+      </if>
+      <if test="berthStatus != null">
+        and a.berth_status = #{berthStatus}
+      </if>
+      <if test="berthCode != null and berthCode != ''">
+        and a.berth_code = #{berthCode}
+      </if>
+      <if test="areaId != null">
+        and a.area_id = #{areaId}
+      </if>
+      <if test="cantonId != null">
+        and a.canton_id = #{cantonId}
+      </if>
+      <if test="loginUserAreaAssType == 1">
+        and d.city_id in (${loginUserCityIds})
+      </if>
+      <if test="loginUserAreaAssType == 2">
+        and a.canton_id in (${loginUserCantonIds})
+      </if>
+      <if test="loginUserAreaAssType == 3">
+        and a.area_id in (${loginUserAreaIds})
+      </if>
+      <if test="snCode != null and snCode!=''">
+        and a.sn_code =#{snCode}
+      </if>
+    </where>
+    order by a.add_time desc
+  </select>
+
+</mapper>

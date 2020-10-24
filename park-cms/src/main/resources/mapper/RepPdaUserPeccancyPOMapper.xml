@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.RepPdaUserPeccancyPOMapper">
+  <resultMap id="BaseResultMap" type="com.park.cloud.common.domain.po.rep.RepPdaUserPeccancyPO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="statistics_day" jdbcType="VARCHAR" property="statisticsDay" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="canton_id" jdbcType="INTEGER" property="cantonId" />
+    <result column="area_id" jdbcType="INTEGER" property="areaId" />
+    <result column="section_id" jdbcType="INTEGER" property="sectionId" />
+    <result column="section_name" jdbcType="VARCHAR" property="sectionName" />
+    <result column="pda_user_id" jdbcType="INTEGER" property="pdaUserId" />
+    <result column="pda_user_name" jdbcType="VARCHAR" property="pdaUserName" />
+    <result column="peccancy_num" jdbcType="INTEGER" property="peccancyNum" />
+    <result column="finish_num" jdbcType="INTEGER" property="finishNum" />
+    <result column="finish_ratio" jdbcType="DECIMAL" property="finishRatio" />
+    <result column="average_finish_time" jdbcType="INTEGER" property="averageFinishTime" />
+    <result column="order_price" javaType="INTEGER" property="orderPrice"/>
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, statistics_day, city_id, canton_id, area_id, section_id, section_name, pda_user_id, 
+    pda_user_name, peccancy_num, finish_num, finish_ratio, average_finish_time,order_price, add_time
+  </sql>
+  <select id="selectByExample" parameterType="com.park.cloud.common.domain.po.rep.RepPdaUserPeccancyPOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from rep_pda_user_peccancy_by_day
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from rep_pda_user_peccancy_by_day
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from rep_pda_user_peccancy_by_day
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.park.cloud.common.domain.po.rep.RepPdaUserPeccancyPOExample">
+    delete from rep_pda_user_peccancy_by_day
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.park.cloud.common.domain.po.rep.RepPdaUserPeccancyPO">
+    insert into rep_pda_user_peccancy_by_day (id, statistics_day, city_id, 
+      canton_id, area_id, section_id, 
+      section_name, pda_user_id, pda_user_name, 
+      peccancy_num, finish_num, finish_ratio, 
+      average_finish_time,order_price, add_time)
+    values (#{id,jdbcType=INTEGER}, #{statisticsDay,jdbcType=VARCHAR}, #{cityId,jdbcType=INTEGER}, 
+      #{cantonId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, 
+      #{sectionName,jdbcType=VARCHAR}, #{pdaUserId,jdbcType=INTEGER}, #{pdaUserName,jdbcType=VARCHAR}, 
+      #{peccancyNum,jdbcType=INTEGER}, #{finishNum,jdbcType=INTEGER}, #{finishRatio,jdbcType=DECIMAL}, 
+      #{averageFinishTime,jdbcType=INTEGER},#{orderPrice,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.park.cloud.common.domain.po.rep.RepPdaUserPeccancyPO">
+    insert into rep_pda_user_peccancy_by_day
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="statisticsDay != null">
+        statistics_day,
+      </if>
+      <if test="cityId != null">
+        city_id,
+      </if>
+      <if test="cantonId != null">
+        canton_id,
+      </if>
+      <if test="areaId != null">
+        area_id,
+      </if>
+      <if test="sectionId != null">
+        section_id,
+      </if>
+      <if test="sectionName != null">
+        section_name,
+      </if>
+      <if test="pdaUserId != null">
+        pda_user_id,
+      </if>
+      <if test="pdaUserName != null">
+        pda_user_name,
+      </if>
+      <if test="peccancyNum != null">
+        peccancy_num,
+      </if>
+      <if test="finishNum != null">
+        finish_num,
+      </if>
+      <if test="finishRatio != null">
+        finish_ratio,
+      </if>
+      <if test="averageFinishTime != null">
+        average_finish_time,
+      </if>
+      <if test="orderPrice != null">
+        order_price,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="statisticsDay != null">
+        #{statisticsDay,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="cantonId != null">
+        #{cantonId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="sectionId != null">
+        #{sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="sectionName != null">
+        #{sectionName,jdbcType=VARCHAR},
+      </if>
+      <if test="pdaUserId != null">
+        #{pdaUserId,jdbcType=INTEGER},
+      </if>
+      <if test="pdaUserName != null">
+        #{pdaUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="peccancyNum != null">
+        #{peccancyNum,jdbcType=INTEGER},
+      </if>
+      <if test="finishNum != null">
+        #{finishNum,jdbcType=INTEGER},
+      </if>
+      <if test="finishRatio != null">
+        #{finishRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="averageFinishTime != null">
+        #{averageFinishTime,jdbcType=INTEGER},
+      </if>
+      <if test="orderPrice != null">
+        #{orderPrice,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.park.cloud.common.domain.po.rep.RepPdaUserPeccancyPOExample" resultType="java.lang.Long">
+    select count(*) from rep_pda_user_peccancy_by_day
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update rep_pda_user_peccancy_by_day
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.statisticsDay != null">
+        statistics_day = #{record.statisticsDay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityId != null">
+        city_id = #{record.cityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cantonId != null">
+        canton_id = #{record.cantonId,jdbcType=INTEGER},
+      </if>
+      <if test="record.areaId != null">
+        area_id = #{record.areaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sectionId != null">
+        section_id = #{record.sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sectionName != null">
+        section_name = #{record.sectionName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pdaUserId != null">
+        pda_user_id = #{record.pdaUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.pdaUserName != null">
+        pda_user_name = #{record.pdaUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.peccancyNum != null">
+        peccancy_num = #{record.peccancyNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.finishNum != null">
+        finish_num = #{record.finishNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.finishRatio != null">
+        finish_ratio = #{record.finishRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.averageFinishTime != null">
+        average_finish_time = #{record.averageFinishTime,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null">
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update rep_pda_user_peccancy_by_day
+    set id = #{record.id,jdbcType=INTEGER},
+      statistics_day = #{record.statisticsDay,jdbcType=VARCHAR},
+      city_id = #{record.cityId,jdbcType=INTEGER},
+      canton_id = #{record.cantonId,jdbcType=INTEGER},
+      area_id = #{record.areaId,jdbcType=INTEGER},
+      section_id = #{record.sectionId,jdbcType=INTEGER},
+      section_name = #{record.sectionName,jdbcType=VARCHAR},
+      pda_user_id = #{record.pdaUserId,jdbcType=INTEGER},
+      pda_user_name = #{record.pdaUserName,jdbcType=VARCHAR},
+      peccancy_num = #{record.peccancyNum,jdbcType=INTEGER},
+      finish_num = #{record.finishNum,jdbcType=INTEGER},
+      finish_ratio = #{record.finishRatio,jdbcType=DECIMAL},
+      average_finish_time = #{record.averageFinishTime,jdbcType=INTEGER},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.park.cloud.common.domain.po.rep.RepPdaUserPeccancyPO">
+    update rep_pda_user_peccancy_by_day
+    <set>
+      <if test="statisticsDay != null">
+        statistics_day = #{statisticsDay,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="cantonId != null">
+        canton_id = #{cantonId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="sectionId != null">
+        section_id = #{sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="sectionName != null">
+        section_name = #{sectionName,jdbcType=VARCHAR},
+      </if>
+      <if test="pdaUserId != null">
+        pda_user_id = #{pdaUserId,jdbcType=INTEGER},
+      </if>
+      <if test="pdaUserName != null">
+        pda_user_name = #{pdaUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="peccancyNum != null">
+        peccancy_num = #{peccancyNum,jdbcType=INTEGER},
+      </if>
+      <if test="finishNum != null">
+        finish_num = #{finishNum,jdbcType=INTEGER},
+      </if>
+      <if test="finishRatio != null">
+        finish_ratio = #{finishRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="averageFinishTime != null">
+        average_finish_time = #{averageFinishTime,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.park.cloud.common.domain.po.rep.RepPdaUserPeccancyPO">
+    update rep_pda_user_peccancy_by_day
+    set statistics_day = #{statisticsDay,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=INTEGER},
+      canton_id = #{cantonId,jdbcType=INTEGER},
+      area_id = #{areaId,jdbcType=INTEGER},
+      section_id = #{sectionId,jdbcType=INTEGER},
+      section_name = #{sectionName,jdbcType=VARCHAR},
+      pda_user_id = #{pdaUserId,jdbcType=INTEGER},
+      pda_user_name = #{pdaUserName,jdbcType=VARCHAR},
+      peccancy_num = #{peccancyNum,jdbcType=INTEGER},
+      finish_num = #{finishNum,jdbcType=INTEGER},
+      finish_ratio = #{finishRatio,jdbcType=DECIMAL},
+      average_finish_time = #{averageFinishTime,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+<select id="getRepPdaUserPeccancy" parameterType="com.park.cloud.common.domain.dto.cms.RepPdaUserPeccancyDto" resultType="com.park.cloud.common.domain.vo.cms.RepPdaUserPeccancyVO">
+    select section_name  as sectionName,
+    pda_user_name  as  pdaUserUame,
+    ifnull(peccancy_num,0)  as  peccancyNum,
+    ifnull(order_price,0)  as orderPrice,
+     ifnull(finish_num,0)   as finishNum,
+    finish_ratio  as finishRatio,
+  ifnull(average_finish_time,0) as averageFinishTime
+    from rep_pda_user_peccancy_by_day
+  <where>
+    1=1
+    <if test="pdaUserName != null and ''!=pdaUserName">
+      and pda_user_name like CONCAT('%',#{pdaUserName},'%')
+    </if>
+    <if test="statisticsStartDay != null and ''!=statisticsStartDay ">
+      and statistics_day <![CDATA[ >= ]]> #{statisticsStartDay}
+    </if>
+    <if test="statisticsEndDay!=null and ''!=statisticsEndDay ">
+      and statistics_day <![CDATA[ <= ]]> #{statisticsEndDay}
+    </if>
+    <if test="loginUserAreaAssType == 1">
+      and city_id in (${loginUserCityIds})
+    </if>
+    <if test="loginUserAreaAssType == 2">
+      and canton_id in (${loginUserCantonIds})
+    </if>
+    <if test="loginUserAreaAssType == 3">
+      and area_id in (${loginUserAreaIds})
+    </if>
+  </where>
+</select>
+
+</mapper>

@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.DictSpecialListPOMapper">
+  <resultMap id="BaseResultMap" type="com.park.cloud.common.domain.po.dict.DictSpecialListPO">
+    <id column="special_list_id" jdbcType="INTEGER" property="specialListId" />
+    <result column="mobile_number" jdbcType="VARCHAR" property="mobileNumber" />
+    <result column="plate_number" jdbcType="VARCHAR" property="plateNumber" />
+    <result column="plate_type" jdbcType="INTEGER" property="plateType" />
+    <result column="area_id" jdbcType="INTEGER" property="areaId" />
+    <result column="canton_id" jdbcType="INTEGER" property="cantonId" />
+    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
+    <result column="special_list_type" jdbcType="INTEGER" property="specialListType" />
+    <result column="special_list_remark" jdbcType="VARCHAR" property="specialListRemark" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="add_user" jdbcType="INTEGER" property="addUser" />
+    <result column="company_id" jdbcType="INTEGER" property="companyId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    special_list_id, mobile_number, plate_number, plate_type, area_id, canton_id, card_number, 
+    special_list_type, special_list_remark, add_time, add_user, company_id
+  </sql>
+  <select id="selectByExample" parameterType="com.park.cloud.common.domain.po.dict.DictSpecialListPOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from dict_special_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dict_special_list
+    where special_list_id = #{specialListId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dict_special_list
+    where special_list_id = #{specialListId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.park.cloud.common.domain.po.dict.DictSpecialListPOExample">
+    delete from dict_special_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.park.cloud.common.domain.po.dict.DictSpecialListPO">
+    insert into dict_special_list (special_list_id, mobile_number, plate_number, 
+      plate_type, area_id, canton_id, 
+      card_number, special_list_type, special_list_remark, 
+      add_time, add_user, company_id
+      )
+    values (#{specialListId,jdbcType=INTEGER}, #{mobileNumber,jdbcType=VARCHAR}, #{plateNumber,jdbcType=VARCHAR}, 
+      #{plateType,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, #{cantonId,jdbcType=INTEGER}, 
+      #{cardNumber,jdbcType=VARCHAR}, #{specialListType,jdbcType=INTEGER}, #{specialListRemark,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{addUser,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.park.cloud.common.domain.po.dict.DictSpecialListPO">
+    insert into dict_special_list
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="specialListId != null">
+        special_list_id,
+      </if>
+      <if test="mobileNumber != null">
+        mobile_number,
+      </if>
+      <if test="plateNumber != null">
+        plate_number,
+      </if>
+      <if test="plateType != null">
+        plate_type,
+      </if>
+      <if test="areaId != null">
+        area_id,
+      </if>
+      <if test="cantonId != null">
+        canton_id,
+      </if>
+      <if test="cardNumber != null">
+        card_number,
+      </if>
+      <if test="specialListType != null">
+        special_list_type,
+      </if>
+      <if test="specialListRemark != null">
+        special_list_remark,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="addUser != null">
+        add_user,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="specialListId != null">
+        #{specialListId,jdbcType=INTEGER},
+      </if>
+      <if test="mobileNumber != null">
+        #{mobileNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="plateNumber != null">
+        #{plateNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="plateType != null">
+        #{plateType,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="cantonId != null">
+        #{cantonId,jdbcType=INTEGER},
+      </if>
+      <if test="cardNumber != null">
+        #{cardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="specialListType != null">
+        #{specialListType,jdbcType=INTEGER},
+      </if>
+      <if test="specialListRemark != null">
+        #{specialListRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null">
+        #{addUser,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.park.cloud.common.domain.po.dict.DictSpecialListPOExample" resultType="java.lang.Long">
+    select count(*) from dict_special_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update dict_special_list
+    <set>
+      <if test="record.specialListId != null">
+        special_list_id = #{record.specialListId,jdbcType=INTEGER},
+      </if>
+      <if test="record.mobileNumber != null">
+        mobile_number = #{record.mobileNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.plateNumber != null">
+        plate_number = #{record.plateNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.plateType != null">
+        plate_type = #{record.plateType,jdbcType=INTEGER},
+      </if>
+      <if test="record.areaId != null">
+        area_id = #{record.areaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cantonId != null">
+        canton_id = #{record.cantonId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cardNumber != null">
+        card_number = #{record.cardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.specialListType != null">
+        special_list_type = #{record.specialListType,jdbcType=INTEGER},
+      </if>
+      <if test="record.specialListRemark != null">
+        special_list_remark = #{record.specialListRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null">
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addUser != null">
+        add_user = #{record.addUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.companyId != null">
+        company_id = #{record.companyId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update dict_special_list
+    set special_list_id = #{record.specialListId,jdbcType=INTEGER},
+      mobile_number = #{record.mobileNumber,jdbcType=VARCHAR},
+      plate_number = #{record.plateNumber,jdbcType=VARCHAR},
+      plate_type = #{record.plateType,jdbcType=INTEGER},
+      area_id = #{record.areaId,jdbcType=INTEGER},
+      canton_id = #{record.cantonId,jdbcType=INTEGER},
+      card_number = #{record.cardNumber,jdbcType=VARCHAR},
+      special_list_type = #{record.specialListType,jdbcType=INTEGER},
+      special_list_remark = #{record.specialListRemark,jdbcType=VARCHAR},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      add_user = #{record.addUser,jdbcType=INTEGER},
+      company_id = #{record.companyId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.park.cloud.common.domain.po.dict.DictSpecialListPO">
+    update dict_special_list
+    <set>
+      <if test="mobileNumber != null">
+        mobile_number = #{mobileNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="plateNumber != null">
+        plate_number = #{plateNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="plateType != null">
+        plate_type = #{plateType,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="cantonId != null">
+        canton_id = #{cantonId,jdbcType=INTEGER},
+      </if>
+      <if test="cardNumber != null">
+        card_number = #{cardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="specialListType != null">
+        special_list_type = #{specialListType,jdbcType=INTEGER},
+      </if>
+      <if test="specialListRemark != null">
+        special_list_remark = #{specialListRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null">
+        add_user = #{addUser,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null">
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where special_list_id = #{specialListId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.park.cloud.common.domain.po.dict.DictSpecialListPO">
+    update dict_special_list
+    set mobile_number = #{mobileNumber,jdbcType=VARCHAR},
+      plate_number = #{plateNumber,jdbcType=VARCHAR},
+      plate_type = #{plateType,jdbcType=INTEGER},
+      area_id = #{areaId,jdbcType=INTEGER},
+      canton_id = #{cantonId,jdbcType=INTEGER},
+      card_number = #{cardNumber,jdbcType=VARCHAR},
+      special_list_type = #{specialListType,jdbcType=INTEGER},
+      special_list_remark = #{specialListRemark,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      add_user = #{addUser,jdbcType=INTEGER},
+      company_id = #{companyId,jdbcType=INTEGER}
+    where special_list_id = #{specialListId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByDto" parameterType="com.park.cloud.common.domain.dto.cms.DictSpecialListDto"
+          resultType="com.park.cloud.common.domain.vo.cms.DictSpecialListVO">
+    SELECT
+    a.special_list_id as specialListId
+    ,a.plate_number as plateNumber
+    ,a.plate_type as plateType
+    ,a.canton_id as cantonId
+    ,if(a.canton_id = 0, '全部', d.canton_name) as cantonName
+    ,a.area_id as areaId
+    ,if(a.area_id = 0, '全部', e.area_name) as areaName
+    ,a.special_list_type as specialListType
+    ,a.special_list_remark as specialListRemark
+    ,a.add_time as addTime
+    ,b.user_true_name as addUserName
+    FROM dict_special_list a
+    left join sys_user b on b.user_id = a.add_user
+    left join dict_canton d on d.canton_id = a.canton_id
+    left join dict_area e on e.area_id = a.area_id
+    <where>
+      1=1
+      <if test="plateNumber != null">
+        and a.plate_number like CONCAT('%',#{plateNumber},'%')
+      </if>
+      <if test="specialListType != null">
+        and a.special_list_type = #{specialListType}
+      </if>
+      <if test="cantonId != null">
+        and a.canton_id = #{cantonId}
+      </if>
+      <if test="areaId != null">
+        and a.area_id = #{areaId}
+      </if>
+    </where>
+    order by a.add_time desc
+  </select>
+
+</mapper>

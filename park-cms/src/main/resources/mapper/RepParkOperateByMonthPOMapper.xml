@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.RepParkOperateByMonthPOMapper">
+  <resultMap id="BaseResultMap" type="com.park.cloud.common.domain.po.rep.RepParkOperateByMonthPO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="statistics_day" jdbcType="VARCHAR" property="statisticsDay" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="canton_id" jdbcType="INTEGER" property="cantonId" />
+    <result column="area_id" jdbcType="INTEGER" property="areaId" />
+    <result column="parking_section_id" jdbcType="INTEGER" property="parkingSectionId" />
+    <result column="parking_section_name" jdbcType="VARCHAR" property="parkingSectionName" />
+    <result column="parking_type" jdbcType="VARCHAR" property="parkingType" />
+    <result column="park_num" jdbcType="INTEGER" property="parkNum" />
+    <result column="trad_enum" jdbcType="INTEGER" property="tradEnum" />
+    <result column="pay_num" jdbcType="INTEGER" property="payNum" />
+    <result column="arrears_num" jdbcType="INTEGER" property="arrearsNum" />
+    <result column="receivable_price" jdbcType="INTEGER" property="receivablePrice" />
+    <result column="receipt_price" jdbcType="INTEGER" property="receiptPrice" />
+    <result column="pay_ratio" jdbcType="DECIMAL" property="payRatio" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, statistics_day, city_id, canton_id, area_id, parking_section_id, parking_section_name, 
+    parking_type, park_num, trad_enum, pay_num, arrears_num, receivable_price, receipt_price, 
+    pay_ratio, add_time
+  </sql>
+  <select id="selectByExample" parameterType="com.park.cloud.common.domain.po.rep.RepParkOperateByMonthPOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from rep_park_operate_by_month
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from rep_park_operate_by_month
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from rep_park_operate_by_month
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.park.cloud.common.domain.po.rep.RepParkOperateByMonthPOExample">
+    delete from rep_park_operate_by_month
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.park.cloud.common.domain.po.rep.RepParkOperateByMonthPO">
+    insert into rep_park_operate_by_month (id, statistics_day, city_id, 
+      canton_id, area_id, parking_section_id, 
+      parking_section_name, parking_type, park_num, 
+      trad_enum, pay_num, arrears_num, 
+      receivable_price, receipt_price, pay_ratio, 
+      add_time)
+    values (#{id,jdbcType=INTEGER}, #{statisticsDay,jdbcType=VARCHAR}, #{cityId,jdbcType=INTEGER}, 
+      #{cantonId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, #{parkingSectionId,jdbcType=INTEGER}, 
+      #{parkingSectionName,jdbcType=VARCHAR}, #{parkingType,jdbcType=VARCHAR}, #{parkNum,jdbcType=INTEGER}, 
+      #{tradEnum,jdbcType=INTEGER}, #{payNum,jdbcType=INTEGER}, #{arrearsNum,jdbcType=INTEGER}, 
+      #{receivablePrice,jdbcType=INTEGER}, #{receiptPrice,jdbcType=INTEGER}, #{payRatio,jdbcType=DECIMAL}, 
+      #{addTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.park.cloud.common.domain.po.rep.RepParkOperateByMonthPO">
+    insert into rep_park_operate_by_month
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="statisticsDay != null">
+        statistics_day,
+      </if>
+      <if test="cityId != null">
+        city_id,
+      </if>
+      <if test="cantonId != null">
+        canton_id,
+      </if>
+      <if test="areaId != null">
+        area_id,
+      </if>
+      <if test="parkingSectionId != null">
+        parking_section_id,
+      </if>
+      <if test="parkingSectionName != null">
+        parking_section_name,
+      </if>
+      <if test="parkingType != null">
+        parking_type,
+      </if>
+      <if test="parkNum != null">
+        park_num,
+      </if>
+      <if test="tradEnum != null">
+        trad_enum,
+      </if>
+      <if test="payNum != null">
+        pay_num,
+      </if>
+      <if test="arrearsNum != null">
+        arrears_num,
+      </if>
+      <if test="receivablePrice != null">
+        receivable_price,
+      </if>
+      <if test="receiptPrice != null">
+        receipt_price,
+      </if>
+      <if test="payRatio != null">
+        pay_ratio,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="statisticsDay != null">
+        #{statisticsDay,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="cantonId != null">
+        #{cantonId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="parkingSectionId != null">
+        #{parkingSectionId,jdbcType=INTEGER},
+      </if>
+      <if test="parkingSectionName != null">
+        #{parkingSectionName,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingType != null">
+        #{parkingType,jdbcType=VARCHAR},
+      </if>
+      <if test="parkNum != null">
+        #{parkNum,jdbcType=INTEGER},
+      </if>
+      <if test="tradEnum != null">
+        #{tradEnum,jdbcType=INTEGER},
+      </if>
+      <if test="payNum != null">
+        #{payNum,jdbcType=INTEGER},
+      </if>
+      <if test="arrearsNum != null">
+        #{arrearsNum,jdbcType=INTEGER},
+      </if>
+      <if test="receivablePrice != null">
+        #{receivablePrice,jdbcType=INTEGER},
+      </if>
+      <if test="receiptPrice != null">
+        #{receiptPrice,jdbcType=INTEGER},
+      </if>
+      <if test="payRatio != null">
+        #{payRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.park.cloud.common.domain.po.rep.RepParkOperateByMonthPOExample" resultType="java.lang.Long">
+    select count(*) from rep_park_operate_by_month
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update rep_park_operate_by_month
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.statisticsDay != null">
+        statistics_day = #{record.statisticsDay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityId != null">
+        city_id = #{record.cityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cantonId != null">
+        canton_id = #{record.cantonId,jdbcType=INTEGER},
+      </if>
+      <if test="record.areaId != null">
+        area_id = #{record.areaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.parkingSectionId != null">
+        parking_section_id = #{record.parkingSectionId,jdbcType=INTEGER},
+      </if>
+      <if test="record.parkingSectionName != null">
+        parking_section_name = #{record.parkingSectionName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parkingType != null">
+        parking_type = #{record.parkingType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parkNum != null">
+        park_num = #{record.parkNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.tradEnum != null">
+        trad_enum = #{record.tradEnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.payNum != null">
+        pay_num = #{record.payNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.arrearsNum != null">
+        arrears_num = #{record.arrearsNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.receivablePrice != null">
+        receivable_price = #{record.receivablePrice,jdbcType=INTEGER},
+      </if>
+      <if test="record.receiptPrice != null">
+        receipt_price = #{record.receiptPrice,jdbcType=INTEGER},
+      </if>
+      <if test="record.payRatio != null">
+        pay_ratio = #{record.payRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.addTime != null">
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update rep_park_operate_by_month
+    set id = #{record.id,jdbcType=INTEGER},
+      statistics_day = #{record.statisticsDay,jdbcType=VARCHAR},
+      city_id = #{record.cityId,jdbcType=INTEGER},
+      canton_id = #{record.cantonId,jdbcType=INTEGER},
+      area_id = #{record.areaId,jdbcType=INTEGER},
+      parking_section_id = #{record.parkingSectionId,jdbcType=INTEGER},
+      parking_section_name = #{record.parkingSectionName,jdbcType=VARCHAR},
+      parking_type = #{record.parkingType,jdbcType=VARCHAR},
+      park_num = #{record.parkNum,jdbcType=INTEGER},
+      trad_enum = #{record.tradEnum,jdbcType=INTEGER},
+      pay_num = #{record.payNum,jdbcType=INTEGER},
+      arrears_num = #{record.arrearsNum,jdbcType=INTEGER},
+      receivable_price = #{record.receivablePrice,jdbcType=INTEGER},
+      receipt_price = #{record.receiptPrice,jdbcType=INTEGER},
+      pay_ratio = #{record.payRatio,jdbcType=DECIMAL},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.park.cloud.common.domain.po.rep.RepParkOperateByMonthPO">
+    update rep_park_operate_by_month
+    <set>
+      <if test="statisticsDay != null">
+        statistics_day = #{statisticsDay,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="cantonId != null">
+        canton_id = #{cantonId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="parkingSectionId != null">
+        parking_section_id = #{parkingSectionId,jdbcType=INTEGER},
+      </if>
+      <if test="parkingSectionName != null">
+        parking_section_name = #{parkingSectionName,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingType != null">
+        parking_type = #{parkingType,jdbcType=VARCHAR},
+      </if>
+      <if test="parkNum != null">
+        park_num = #{parkNum,jdbcType=INTEGER},
+      </if>
+      <if test="tradEnum != null">
+        trad_enum = #{tradEnum,jdbcType=INTEGER},
+      </if>
+      <if test="payNum != null">
+        pay_num = #{payNum,jdbcType=INTEGER},
+      </if>
+      <if test="arrearsNum != null">
+        arrears_num = #{arrearsNum,jdbcType=INTEGER},
+      </if>
+      <if test="receivablePrice != null">
+        receivable_price = #{receivablePrice,jdbcType=INTEGER},
+      </if>
+      <if test="receiptPrice != null">
+        receipt_price = #{receiptPrice,jdbcType=INTEGER},
+      </if>
+      <if test="payRatio != null">
+        pay_ratio = #{payRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.park.cloud.common.domain.po.rep.RepParkOperateByMonthPO">
+    update rep_park_operate_by_month
+    set statistics_day = #{statisticsDay,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=INTEGER},
+      canton_id = #{cantonId,jdbcType=INTEGER},
+      area_id = #{areaId,jdbcType=INTEGER},
+      parking_section_id = #{parkingSectionId,jdbcType=INTEGER},
+      parking_section_name = #{parkingSectionName,jdbcType=VARCHAR},
+      parking_type = #{parkingType,jdbcType=VARCHAR},
+      park_num = #{parkNum,jdbcType=INTEGER},
+      trad_enum = #{tradEnum,jdbcType=INTEGER},
+      pay_num = #{payNum,jdbcType=INTEGER},
+      arrears_num = #{arrearsNum,jdbcType=INTEGER},
+      receivable_price = #{receivablePrice,jdbcType=INTEGER},
+      receipt_price = #{receiptPrice,jdbcType=INTEGER},
+      pay_ratio = #{payRatio,jdbcType=DECIMAL},
+      add_time = #{addTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="dealStatistics"  parameterType="com.park.cloud.common.domain.dto.cms.RepParkOperateByMonthDto" resultType="com.park.cloud.common.domain.vo.cms.RepParkOperateByMonthVO">
+    SELECT
+    ifnull(park_num,0) as payNum,
+    ifnull(trad_enum,0) as tradEnum,
+    ifnull(arrears_num,0) as arrearsNum,
+    ifnull(receivable_price,0) as receivablePrice,
+    ifnull(receipt_price,0) as receiptPrice
+     from rep_park_operate_by_month
+    <where>
+      1=1
+      <if test="statisticsDay != null and ''!=statisticsDay ">
+        and substring(statistics_day,1,7) <![CDATA[ = ]]> substring(#{statisticsDay},1,7)
+      </if>
+      <if test="loginUserAreaAssType == 1">
+        and city_id in (${loginUserCityIds})
+      </if>
+      <if test="loginUserAreaAssType == 2">
+        and canton_id in (${loginUserCantonIds})
+      </if>
+      <if test="loginUserAreaAssType == 3">
+        and area_id in (${loginUserAreaIds})
+      </if>
+    </where>
+    ORDER BY add_time
+  </select>
+  <select id="findCount" resultType="java.lang.Integer">
+    select  count(*) from dict_parking_city
+  </select>
+  <select id="findRepPark" parameterType="com.park.cloud.common.domain.dto.cms.RepParkOperateByMonthDto" resultType="com.park.cloud.common.domain.vo.cms.RepParkOperateByMonthPageVO">
+    SELECT parking_section_name as sectionName,
+    parking_section_id as sectionId,
+    park_num as parkNum,
+    trad_enum as tradEnum,
+    arrears_num as arrearsNum,
+    parking_type as parkingType,
+    receivable_price as receivablePrice,
+    receipt_price as receiptPrice
+     from rep_park_operate_by_month
+    <where>
+     1=1
+      <if test="statisticsDay != null and ''!=statisticsDay ">
+        and substring(statistics_day,1,7) <![CDATA[ = ]]> substring(#{statisticsDay},1,7)
+      </if>
+      <if test="loginUserAreaAssType == 1">
+        and city_id in (${loginUserCityIds})
+      </if>
+      <if test="loginUserAreaAssType == 2">
+        and canton_id in (${loginUserCantonIds})
+      </if>
+      <if test="loginUserAreaAssType == 3">
+        and area_id in (${loginUserAreaIds})
+      </if>
+    </where>
+    ORDER BY add_time
+  </select>
+<select id="detailsList" parameterType="com.park.cloud.common.domain.dto.cms.RepParkOperateDetailsDto" resultType="com.park.cloud.common.domain.vo.cms.RepParkOperateDetailsVO">
+  SELECT o.bargain_order_code as orderCode,
+  o.plate_number  as plateNumber,
+  o.actual_duration  as actualDuration,
+  o.pay_charge  as payCharge,
+  o.free_charge  as freeCharge,
+  o.refund_price  as  refundPrice,
+  i.pay_price   as payPrice,
+  i.pay_type    as payType,
+  i.payment_time as paymentTime,
+  i.payer_trade_no  as payerTradeNo
+  from tra_bargain_order  o
+  LEFT JOIN dict_berth_city c
+  on o.berth_code=c.berth_code
+  LEFT JOIN rep_park_operate_by_month d
+  on c.parking_id=d.parking_section_id
+  LEFT JOIN tra_order_payment_info i
+  on o.bargain_order_code=i.bargain_order_code
+  <where>
+    parking_type=0 and o.pay_status=1
+    <if test="parkingId != null and ''!=parkingId  ">
+      and d.parking_section_id = #{parkingId}
+    </if>
+    <if test="statisticsDay != null and ''!=statisticsDay  ">
+      and substring(statistics_day,1,7) <![CDATA[ = ]]> substring(#{statisticsDay},1,7)
+    </if>
+    <if test="statisticsDay != null and ''!=statisticsDay  ">
+      and substring(i.payment_time,1,7) <![CDATA[ = ]]> substring(#{statisticsDay},1,7)
+    </if>
+    <if test="loginUserAreaAssType == 1">
+      and d.city_id in (${loginUserCityIds})
+    </if>
+    <if test="loginUserAreaAssType == 2">
+      and d.canton_id in (${loginUserCantonIds})
+    </if>
+    <if test="loginUserAreaAssType == 3">
+      and d.area_id in (${loginUserAreaIds})
+    </if>
+  </where>
+</select>
+
+  <select id="detailsListBySertionId" parameterType="com.park.cloud.common.domain.dto.cms.RepParkOperateDetailsDto" resultType="com.park.cloud.common.domain.vo.cms.RepParkOperateDetailsVO">
+    SELECT o.bargain_order_code as orderCode,
+    o.plate_number  as plateNumber,
+    o.actual_duration  as actualDuration,
+    o.pay_charge  as payCharge,
+    o.free_charge  as freeCharge,
+    o.refund_price  as  refundPrice,
+    i.pay_price   as payPrice,
+    i.pay_type    as payType,
+    i.payment_time as paymentTime,
+    i.payer_trade_no  as payerTradeNo
+    from tra_bargain_order  o
+    LEFT JOIN dict_berth_city c
+    on o.berth_code=c.berth_code
+    LEFT JOIN rep_park_operate_by_month d
+    on c.section_id=d.parking_section_id
+    LEFT JOIN tra_order_payment_info i
+    on o.bargain_order_code=i.bargain_order_code
+    <where>
+      parking_type=1  and o.pay_status=1
+      <if test="parkingId != null and ''!=parkingId ">
+        and d.parking_section_id = #{parkingId}
+      </if>
+      <if test="statisticsDay != null and ''!=statisticsDay ">
+        and substring(d.statistics_day,1,7) <![CDATA[ = ]]> substring(#{statisticsDay},1,7)
+      </if>
+      <if test="statisticsDay != null and ''!=statisticsDay ">
+        and substring(i.payment_time,1,7) <![CDATA[ = ]]> substring(#{statisticsDay},1,7)
+      </if>
+      <if test="loginUserAreaAssType == 1">
+        and d.city_id in (${loginUserCityIds})
+      </if>
+      <if test="loginUserAreaAssType == 2">
+        and d.canton_id in (${loginUserCantonIds})
+      </if>
+      <if test="loginUserAreaAssType == 3">
+        and d.area_id in (${loginUserAreaIds})
+      </if>
+    </where>
+  </select>
+
+  <select id="findRepRunStatics" parameterType="com.park.cloud.common.domain.dto.cms.RepRunStatisicsByMonthDto" resultType="com.park.cloud.common.domain.vo.cms.RepRunStatisticsByMonthVO">
+    SELECT parking_section_name as sectionName,
+    statistics_day as  statisticsDay,
+    park_num as parkNum,
+    pay_num as payNum,
+    arrears_num as arrearsNum,
+    pay_ratio as  payRatio,
+    receivable_price as receivablePrice,
+    receipt_price as receiptPrice
+    from rep_park_operate_by_month
+    <where>
+      1=1
+      <if test="sectionName != null and ''!=sectionName ">
+        and parking_section_name like CONCAT('%',#{sectionName},'%')
+      </if>
+      <if test="statisticsStartDay != null and ''!=statisticsStartDay ">
+        and statistics_day <![CDATA[ >= ]]> #{statisticsStartDay}
+      </if>
+      <if test="statisticsEndDay != null and ''!=statisticsEndDay ">
+        and statistics_day <![CDATA[ <= ]]> #{statisticsEndDay}
+      </if>
+      <if test="loginUserAreaAssType == 1">
+        and city_id in (${loginUserCityIds})
+      </if>
+      <if test="loginUserAreaAssType == 2">
+        and canton_id in (${loginUserCantonIds})
+      </if>
+      <if test="loginUserAreaAssType == 3">
+        and area_id in (${loginUserAreaIds})
+      </if>
+    </where>
+    ORDER BY add_time
+  </select>
+  <select id="findAllByDate" parameterType="com.park.cloud.common.domain.dto.cms.RepRunStatisicsByMonthDto" resultType="com.park.cloud.common.domain.vo.cms.RepRunStatisticsTopVO">
+    SELECT
+    ifnull(trad_enum,0) as tradEnum,
+    ifnull(pay_num,0) as payNum,
+    ifnull(arrears_num,0) as arrearsNum,
+    pay_ratio as  payRatio,
+    ifnull(receivable_price,0) as receivablePrice,
+    ifnull(receipt_price,0) as receiptPrice
+    from rep_park_operate_by_month
+    <where>
+      1=1
+      <if test="sectionName != null and ''!=sectionName ">
+        and parking_section_name like CONCAT('%',#{sectionName},'%')
+      </if>
+      <if test="statisticsStartDay != null and ''!=statisticsStartDay ">
+        and statistics_day <![CDATA[ >= ]]> #{statisticsStartDay}
+      </if>
+      <if test="statisticsEndDay != null and ''!=statisticsEndDay ">
+        and statistics_day <![CDATA[ <= ]]> #{statisticsEndDay}
+      </if>
+      <if test="loginUserAreaAssType == 1">
+        and city_id in (${loginUserCityIds})
+      </if>
+      <if test="loginUserAreaAssType == 2">
+        and canton_id in (${loginUserCantonIds})
+      </if>
+      <if test="loginUserAreaAssType == 3">
+        and area_id in (${loginUserAreaIds})
+      </if>
+    </where>
+    ORDER BY add_time
+  </select>
+  <select id="findAllByBelowDate" parameterType="com.park.cloud.common.domain.dto.cms.RepRunStatisicsByMonthDto" resultType="com.park.cloud.common.domain.vo.cms.RepRunBelowStatisticsVO">
+    SELECT
+    statistics_day as  statisticsDay,
+    trad_enum as tradEnum,
+    park_num as parkNum,
+    pay_num as payNum,
+    arrears_num as arrearsNum,
+    pay_ratio as  payRatio,
+    receivable_price as receivablePrice,
+    receipt_price as receiptPrice
+    from rep_park_operate_by_month
+    <where>
+      1=1
+      <if test="sectionName != null and ''!=sectionName ">
+        and parking_section_name like CONCAT('%',#{sectionName},'%')
+      </if>
+      <if test="statisticsStartDay != null and ''!=statisticsStartDay ">
+        and substring(statistics_day,1,7)  <![CDATA[ = ]]> #{statisticsStartDay}
+      </if>
+      <if test="loginUserAreaAssType == 1">
+        and city_id in (${loginUserCityIds})
+      </if>
+      <if test="loginUserAreaAssType == 2">
+        and canton_id in (${loginUserCantonIds})
+      </if>
+      <if test="loginUserAreaAssType == 3">
+        and area_id in (${loginUserAreaIds})
+      </if>
+    </where>
+    ORDER BY add_time
+  </select>
+</mapper>

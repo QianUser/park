@@ -1,0 +1,815 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.DictParkingCityPOMapper">
+  <resultMap id="BaseResultMap" type="com.park.cloud.common.domain.po.dict.DictParkingCityPO">
+    <id column="parking_id" jdbcType="INTEGER" property="parkingId" />
+    <result column="parking_name" jdbcType="VARCHAR" property="parkingName" />
+    <result column="parking_type" jdbcType="INTEGER" property="parkingType" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="canton_id" jdbcType="INTEGER" property="cantonId" />
+    <result column="area_id" jdbcType="INTEGER" property="areaId" />
+    <result column="section_id" jdbcType="INTEGER" property="sectionId" />
+    <result column="monthly_ticket_limit" jdbcType="INTEGER" property="monthlyTicketLimit" />
+    <result column="monthly_ticket_price" jdbcType="INTEGER" property="monthlyTicketPrice" />
+    <result column="pricing_strategy_id" jdbcType="INTEGER" property="pricingStrategyId" />
+    <result column="monthly_strategy_id" jdbcType="INTEGER" property="monthlyStrategyId" />
+    <result column="parking_user" jdbcType="VARCHAR" property="parkingUser" />
+    <result column="parking_pwd" jdbcType="VARCHAR" property="parkingPwd" />
+    <result column="parking_mold" jdbcType="INTEGER" property="parkingMold" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="add_user" jdbcType="INTEGER" property="addUser" />
+    <result column="seation_address" jdbcType="VARCHAR" property="seationAddress" />
+    <result column="management_unit" jdbcType="VARCHAR" property="managementUnit" />
+    <result column="parking_tel" jdbcType="VARCHAR" property="parkingTel" />
+    <result column="img_path" jdbcType="VARCHAR" property="imgPath" />
+    <result column="total_parking_no" jdbcType="INTEGER" property="totalParkingNo" />
+    <result column="fixture_parking_no" jdbcType="INTEGER" property="fixtureParkingNo" />
+    <result column="current_parking_no" jdbcType="INTEGER" property="currentParkingNo" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+    <result column="park_code" jdbcType="VARCHAR" property="parkCode" />
+    <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
+    <result column="strategy_info" jdbcType="VARCHAR" property="strategyInfo" />
+    <result column="company_id" jdbcType="INTEGER" property="companyId" />
+    <result column="saturation" jdbcType="DECIMAL" property="saturation" />
+    <result column="business_type" jdbcType="INTEGER" property="businessType" />
+    <result column="parking_remark" jdbcType="VARCHAR" property="parkingRemark" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    parking_id, parking_name, parking_type, city_id, canton_id, area_id, section_id, 
+    monthly_ticket_limit, monthly_ticket_price, pricing_strategy_id, monthly_strategy_id, 
+    parking_user, parking_pwd, parking_mold, add_time, add_user, seation_address, management_unit, 
+    parking_tel, img_path, total_parking_no, fixture_parking_no, current_parking_no, 
+    longitude, latitude, park_code, city_code, strategy_info, company_id, saturation, 
+    business_type, parking_remark
+  </sql>
+  <select id="selectByExample" parameterType="com.park.cloud.common.domain.po.dict.DictParkingCityPOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from dict_parking_city
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dict_parking_city
+    where parking_id = #{parkingId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dict_parking_city
+    where parking_id = #{parkingId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.park.cloud.common.domain.po.dict.DictParkingCityPOExample">
+    delete from dict_parking_city
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.park.cloud.common.domain.po.dict.DictParkingCityPO">
+    insert into dict_parking_city (parking_id, parking_name, parking_type, 
+      city_id, canton_id, area_id, 
+      section_id, monthly_ticket_limit, monthly_ticket_price, 
+      pricing_strategy_id, monthly_strategy_id, parking_user, 
+      parking_pwd, parking_mold, add_time, 
+      add_user, seation_address, management_unit, 
+      parking_tel, img_path, total_parking_no, 
+      fixture_parking_no, current_parking_no, longitude, 
+      latitude, park_code, city_code, 
+      strategy_info, company_id, saturation, 
+      business_type, parking_remark)
+    values (#{parkingId,jdbcType=INTEGER}, #{parkingName,jdbcType=VARCHAR}, #{parkingType,jdbcType=INTEGER}, 
+      #{cityId,jdbcType=INTEGER}, #{cantonId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, 
+      #{sectionId,jdbcType=INTEGER}, #{monthlyTicketLimit,jdbcType=INTEGER}, #{monthlyTicketPrice,jdbcType=INTEGER}, 
+      #{pricingStrategyId,jdbcType=INTEGER}, #{monthlyStrategyId,jdbcType=INTEGER}, #{parkingUser,jdbcType=VARCHAR}, 
+      #{parkingPwd,jdbcType=VARCHAR}, #{parkingMold,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{addUser,jdbcType=INTEGER}, #{seationAddress,jdbcType=VARCHAR}, #{managementUnit,jdbcType=VARCHAR}, 
+      #{parkingTel,jdbcType=VARCHAR}, #{imgPath,jdbcType=VARCHAR}, #{totalParkingNo,jdbcType=INTEGER}, 
+      #{fixtureParkingNo,jdbcType=INTEGER}, #{currentParkingNo,jdbcType=INTEGER}, #{longitude,jdbcType=VARCHAR}, 
+      #{latitude,jdbcType=VARCHAR}, #{parkCode,jdbcType=VARCHAR}, #{cityCode,jdbcType=VARCHAR}, 
+      #{strategyInfo,jdbcType=VARCHAR}, #{companyId,jdbcType=INTEGER}, #{saturation,jdbcType=DECIMAL}, 
+      #{businessType,jdbcType=INTEGER}, #{parkingRemark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.park.cloud.common.domain.po.dict.DictParkingCityPO">
+    insert into dict_parking_city
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="parkingId != null">
+        parking_id,
+      </if>
+      <if test="parkingName != null">
+        parking_name,
+      </if>
+      <if test="parkingType != null">
+        parking_type,
+      </if>
+      <if test="cityId != null">
+        city_id,
+      </if>
+      <if test="cantonId != null">
+        canton_id,
+      </if>
+      <if test="areaId != null">
+        area_id,
+      </if>
+      <if test="sectionId != null">
+        section_id,
+      </if>
+      <if test="monthlyTicketLimit != null">
+        monthly_ticket_limit,
+      </if>
+      <if test="monthlyTicketPrice != null">
+        monthly_ticket_price,
+      </if>
+      <if test="pricingStrategyId != null">
+        pricing_strategy_id,
+      </if>
+      <if test="monthlyStrategyId != null">
+        monthly_strategy_id,
+      </if>
+      <if test="parkingUser != null">
+        parking_user,
+      </if>
+      <if test="parkingPwd != null">
+        parking_pwd,
+      </if>
+      <if test="parkingMold != null">
+        parking_mold,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="addUser != null">
+        add_user,
+      </if>
+      <if test="seationAddress != null">
+        seation_address,
+      </if>
+      <if test="managementUnit != null">
+        management_unit,
+      </if>
+      <if test="parkingTel != null">
+        parking_tel,
+      </if>
+      <if test="imgPath != null">
+        img_path,
+      </if>
+      <if test="totalParkingNo != null">
+        total_parking_no,
+      </if>
+      <if test="fixtureParkingNo != null">
+        fixture_parking_no,
+      </if>
+      <if test="currentParkingNo != null">
+        current_parking_no,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="parkCode != null">
+        park_code,
+      </if>
+      <if test="cityCode != null">
+        city_code,
+      </if>
+      <if test="strategyInfo != null">
+        strategy_info,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="saturation != null">
+        saturation,
+      </if>
+      <if test="businessType != null">
+        business_type,
+      </if>
+      <if test="parkingRemark != null">
+        parking_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="parkingId != null">
+        #{parkingId,jdbcType=INTEGER},
+      </if>
+      <if test="parkingName != null">
+        #{parkingName,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingType != null">
+        #{parkingType,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="cantonId != null">
+        #{cantonId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="sectionId != null">
+        #{sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="monthlyTicketLimit != null">
+        #{monthlyTicketLimit,jdbcType=INTEGER},
+      </if>
+      <if test="monthlyTicketPrice != null">
+        #{monthlyTicketPrice,jdbcType=INTEGER},
+      </if>
+      <if test="pricingStrategyId != null">
+        #{pricingStrategyId,jdbcType=INTEGER},
+      </if>
+      <if test="monthlyStrategyId != null">
+        #{monthlyStrategyId,jdbcType=INTEGER},
+      </if>
+      <if test="parkingUser != null">
+        #{parkingUser,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingPwd != null">
+        #{parkingPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingMold != null">
+        #{parkingMold,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null">
+        #{addUser,jdbcType=INTEGER},
+      </if>
+      <if test="seationAddress != null">
+        #{seationAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="managementUnit != null">
+        #{managementUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingTel != null">
+        #{parkingTel,jdbcType=VARCHAR},
+      </if>
+      <if test="imgPath != null">
+        #{imgPath,jdbcType=VARCHAR},
+      </if>
+      <if test="totalParkingNo != null">
+        #{totalParkingNo,jdbcType=INTEGER},
+      </if>
+      <if test="fixtureParkingNo != null">
+        #{fixtureParkingNo,jdbcType=INTEGER},
+      </if>
+      <if test="currentParkingNo != null">
+        #{currentParkingNo,jdbcType=INTEGER},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="parkCode != null">
+        #{parkCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null">
+        #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="strategyInfo != null">
+        #{strategyInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="saturation != null">
+        #{saturation,jdbcType=DECIMAL},
+      </if>
+      <if test="businessType != null">
+        #{businessType,jdbcType=INTEGER},
+      </if>
+      <if test="parkingRemark != null">
+        #{parkingRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.park.cloud.common.domain.po.dict.DictParkingCityPOExample" resultType="java.lang.Long">
+    select count(*) from dict_parking_city
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update dict_parking_city
+    <set>
+      <if test="record.parkingId != null">
+        parking_id = #{record.parkingId,jdbcType=INTEGER},
+      </if>
+      <if test="record.parkingName != null">
+        parking_name = #{record.parkingName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parkingType != null">
+        parking_type = #{record.parkingType,jdbcType=INTEGER},
+      </if>
+      <if test="record.cityId != null">
+        city_id = #{record.cityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cantonId != null">
+        canton_id = #{record.cantonId,jdbcType=INTEGER},
+      </if>
+      <if test="record.areaId != null">
+        area_id = #{record.areaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sectionId != null">
+        section_id = #{record.sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="record.monthlyTicketLimit != null">
+        monthly_ticket_limit = #{record.monthlyTicketLimit,jdbcType=INTEGER},
+      </if>
+      <if test="record.monthlyTicketPrice != null">
+        monthly_ticket_price = #{record.monthlyTicketPrice,jdbcType=INTEGER},
+      </if>
+      <if test="record.pricingStrategyId != null">
+        pricing_strategy_id = #{record.pricingStrategyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.monthlyStrategyId != null">
+        monthly_strategy_id = #{record.monthlyStrategyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.parkingUser != null">
+        parking_user = #{record.parkingUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parkingPwd != null">
+        parking_pwd = #{record.parkingPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parkingMold != null">
+        parking_mold = #{record.parkingMold,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null">
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addUser != null">
+        add_user = #{record.addUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.seationAddress != null">
+        seation_address = #{record.seationAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.managementUnit != null">
+        management_unit = #{record.managementUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parkingTel != null">
+        parking_tel = #{record.parkingTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imgPath != null">
+        img_path = #{record.imgPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalParkingNo != null">
+        total_parking_no = #{record.totalParkingNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.fixtureParkingNo != null">
+        fixture_parking_no = #{record.fixtureParkingNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.currentParkingNo != null">
+        current_parking_no = #{record.currentParkingNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.longitude != null">
+        longitude = #{record.longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.latitude != null">
+        latitude = #{record.latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parkCode != null">
+        park_code = #{record.parkCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityCode != null">
+        city_code = #{record.cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strategyInfo != null">
+        strategy_info = #{record.strategyInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyId != null">
+        company_id = #{record.companyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.saturation != null">
+        saturation = #{record.saturation,jdbcType=DECIMAL},
+      </if>
+      <if test="record.businessType != null">
+        business_type = #{record.businessType,jdbcType=INTEGER},
+      </if>
+      <if test="record.parkingRemark != null">
+        parking_remark = #{record.parkingRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update dict_parking_city
+    set parking_id = #{record.parkingId,jdbcType=INTEGER},
+      parking_name = #{record.parkingName,jdbcType=VARCHAR},
+      parking_type = #{record.parkingType,jdbcType=INTEGER},
+      city_id = #{record.cityId,jdbcType=INTEGER},
+      canton_id = #{record.cantonId,jdbcType=INTEGER},
+      area_id = #{record.areaId,jdbcType=INTEGER},
+      section_id = #{record.sectionId,jdbcType=INTEGER},
+      monthly_ticket_limit = #{record.monthlyTicketLimit,jdbcType=INTEGER},
+      monthly_ticket_price = #{record.monthlyTicketPrice,jdbcType=INTEGER},
+      pricing_strategy_id = #{record.pricingStrategyId,jdbcType=INTEGER},
+      monthly_strategy_id = #{record.monthlyStrategyId,jdbcType=INTEGER},
+      parking_user = #{record.parkingUser,jdbcType=VARCHAR},
+      parking_pwd = #{record.parkingPwd,jdbcType=VARCHAR},
+      parking_mold = #{record.parkingMold,jdbcType=INTEGER},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      add_user = #{record.addUser,jdbcType=INTEGER},
+      seation_address = #{record.seationAddress,jdbcType=VARCHAR},
+      management_unit = #{record.managementUnit,jdbcType=VARCHAR},
+      parking_tel = #{record.parkingTel,jdbcType=VARCHAR},
+      img_path = #{record.imgPath,jdbcType=VARCHAR},
+      total_parking_no = #{record.totalParkingNo,jdbcType=INTEGER},
+      fixture_parking_no = #{record.fixtureParkingNo,jdbcType=INTEGER},
+      current_parking_no = #{record.currentParkingNo,jdbcType=INTEGER},
+      longitude = #{record.longitude,jdbcType=VARCHAR},
+      latitude = #{record.latitude,jdbcType=VARCHAR},
+      park_code = #{record.parkCode,jdbcType=VARCHAR},
+      city_code = #{record.cityCode,jdbcType=VARCHAR},
+      strategy_info = #{record.strategyInfo,jdbcType=VARCHAR},
+      company_id = #{record.companyId,jdbcType=INTEGER},
+      saturation = #{record.saturation,jdbcType=DECIMAL},
+      business_type = #{record.businessType,jdbcType=INTEGER},
+      parking_remark = #{record.parkingRemark,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.park.cloud.common.domain.po.dict.DictParkingCityPO">
+    update dict_parking_city
+    <set>
+      <if test="parkingName != null">
+        parking_name = #{parkingName,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingType != null">
+        parking_type = #{parkingType,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null">
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="cantonId != null">
+        canton_id = #{cantonId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="sectionId != null">
+        section_id = #{sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="monthlyTicketLimit != null">
+        monthly_ticket_limit = #{monthlyTicketLimit,jdbcType=INTEGER},
+      </if>
+      <if test="monthlyTicketPrice != null">
+        monthly_ticket_price = #{monthlyTicketPrice,jdbcType=INTEGER},
+      </if>
+      <if test="pricingStrategyId != null">
+        pricing_strategy_id = #{pricingStrategyId,jdbcType=INTEGER},
+      </if>
+      <if test="monthlyStrategyId != null">
+        monthly_strategy_id = #{monthlyStrategyId,jdbcType=INTEGER},
+      </if>
+      <if test="parkingUser != null">
+        parking_user = #{parkingUser,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingPwd != null">
+        parking_pwd = #{parkingPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingMold != null">
+        parking_mold = #{parkingMold,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null">
+        add_user = #{addUser,jdbcType=INTEGER},
+      </if>
+      <if test="seationAddress != null">
+        seation_address = #{seationAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="managementUnit != null">
+        management_unit = #{managementUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingTel != null">
+        parking_tel = #{parkingTel,jdbcType=VARCHAR},
+      </if>
+      <if test="imgPath != null">
+        img_path = #{imgPath,jdbcType=VARCHAR},
+      </if>
+      <if test="totalParkingNo != null">
+        total_parking_no = #{totalParkingNo,jdbcType=INTEGER},
+      </if>
+      <if test="fixtureParkingNo != null">
+        fixture_parking_no = #{fixtureParkingNo,jdbcType=INTEGER},
+      </if>
+      <if test="currentParkingNo != null">
+        current_parking_no = #{currentParkingNo,jdbcType=INTEGER},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="parkCode != null">
+        park_code = #{parkCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null">
+        city_code = #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="strategyInfo != null">
+        strategy_info = #{strategyInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="saturation != null">
+        saturation = #{saturation,jdbcType=DECIMAL},
+      </if>
+      <if test="businessType != null">
+        business_type = #{businessType,jdbcType=INTEGER},
+      </if>
+      <if test="parkingRemark != null">
+        parking_remark = #{parkingRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where parking_id = #{parkingId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.park.cloud.common.domain.po.dict.DictParkingCityPO">
+    update dict_parking_city
+    set parking_name = #{parkingName,jdbcType=VARCHAR},
+      parking_type = #{parkingType,jdbcType=INTEGER},
+      city_id = #{cityId,jdbcType=INTEGER},
+      canton_id = #{cantonId,jdbcType=INTEGER},
+      area_id = #{areaId,jdbcType=INTEGER},
+      section_id = #{sectionId,jdbcType=INTEGER},
+      monthly_ticket_limit = #{monthlyTicketLimit,jdbcType=INTEGER},
+      monthly_ticket_price = #{monthlyTicketPrice,jdbcType=INTEGER},
+      pricing_strategy_id = #{pricingStrategyId,jdbcType=INTEGER},
+      monthly_strategy_id = #{monthlyStrategyId,jdbcType=INTEGER},
+      parking_user = #{parkingUser,jdbcType=VARCHAR},
+      parking_pwd = #{parkingPwd,jdbcType=VARCHAR},
+      parking_mold = #{parkingMold,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      add_user = #{addUser,jdbcType=INTEGER},
+      seation_address = #{seationAddress,jdbcType=VARCHAR},
+      management_unit = #{managementUnit,jdbcType=VARCHAR},
+      parking_tel = #{parkingTel,jdbcType=VARCHAR},
+      img_path = #{imgPath,jdbcType=VARCHAR},
+      total_parking_no = #{totalParkingNo,jdbcType=INTEGER},
+      fixture_parking_no = #{fixtureParkingNo,jdbcType=INTEGER},
+      current_parking_no = #{currentParkingNo,jdbcType=INTEGER},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      park_code = #{parkCode,jdbcType=VARCHAR},
+      city_code = #{cityCode,jdbcType=VARCHAR},
+      strategy_info = #{strategyInfo,jdbcType=VARCHAR},
+      company_id = #{companyId,jdbcType=INTEGER},
+      saturation = #{saturation,jdbcType=DECIMAL},
+      business_type = #{businessType,jdbcType=INTEGER},
+      parking_remark = #{parkingRemark,jdbcType=VARCHAR}
+    where parking_id = #{parkingId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByDto" parameterType="com.park.cloud.common.domain.dto.cms.DictParkingCityDto"
+          resultType="com.park.cloud.common.domain.vo.cms.DictParkingCityVO">
+    SELECT
+    a.parking_id as parkingId
+    ,a.parking_name as parkingName
+    ,a.park_code as parkCode
+    ,a.city_id as cityId
+    ,c.city_name as cityName
+    ,a.canton_id as cantonId
+    ,d.canton_name as cantonName
+    ,a.area_id as areaId
+    ,e.area_name as areaName
+    ,a.monthly_ticket_limit as monthlyTicketLimit
+    ,a.pricing_strategy_id as pricingStrategyId
+    ,f.pricing_strategy_name as pricingStrategyName
+    ,a.monthly_strategy_id as monthlyStrategyId
+    ,g.monthly_strategy_name as monthlyStrategyName
+    ,a.parking_user as parkingUser
+    ,a.parking_pwd as parkingPwd
+    ,a.parking_mold as parkingMold
+    ,a.seation_address as seationAddress
+    ,a.total_parking_no as totalParkingNo
+    ,a.longitude as longitude
+    ,a.latitude as latitude
+    ,a.business_type as businessType
+    ,a.parking_remark as parkingRemark
+    ,ifnull(h.work_num, 0) as workNum
+    ,ifnull(h.non_work_num, 0) as nonWorkNum
+    ,ifnull(h.all_num, 0) as allNum
+    ,a.add_time as addTime
+    ,b.user_true_name as addUserName
+    FROM dict_parking_city a
+    left join sys_user b on b.user_id = a.add_user
+    left join dict_city c on c.city_id = a.city_id
+    left join dict_canton d on d.canton_id = a.canton_id
+    left join dict_area e on e.area_id = a.area_id
+    left join tra_pricing_strategy f on f.Pricing_strategy_id = a.pricing_strategy_id
+    left join tra_monthly_strategy g on g.monthly_strategy_id = a.monthly_strategy_id
+    left join tra_parking_monthly_info h on h.parking_section_id = a.parking_id and h.stats_month = date_format(now(), '%Y-%m') and h.parking_type = 0
+    <where>
+      1=1
+      <if test="parkingName != null">
+        and a.parking_name like CONCAT('%',#{parkingName},'%')
+      </if>
+      <if test="parkingMold != null">
+        and a.parking_mold = #{parkingMold}
+      </if>
+      <if test="areaId != null">
+        and a.area_id = #{areaId}
+      </if>
+      <if test="loginUserAreaAssType == 1">
+        and a.city_id in (${loginUserCityIds})
+      </if>
+      <if test="loginUserAreaAssType == 2">
+        and a.canton_id in (${loginUserCantonIds})
+      </if>
+      <if test="loginUserAreaAssType == 3">
+        and a.area_id in (${loginUserAreaIds})
+      </if>
+    </where>
+    order by a.add_time desc
+  </select>
+
+  <select id="selectListByDto" parameterType="com.park.cloud.common.domain.dto.cms.DictParkingCityDto"
+          resultType="com.park.cloud.common.domain.vo.cms.DictParkingCityListVO">
+    SELECT
+    a.parking_id as parkingId
+    ,a.parking_name as parkingName
+    FROM dict_parking_city a
+    <where>
+      1=1
+      <if test="parkingName != null">
+        and a.parking_name like CONCAT('%',#{parkingName},'%')
+      </if>
+      <if test="parkingMold != null">
+        and a.parking_mold = #{parkingMold}
+      </if>
+      <if test="areaId != null">
+        and a.area_id = #{areaId}
+      </if>
+      <if test="loginUserAreaAssType == 1">
+        and a.city_id in (${loginUserCityIds})
+      </if>
+      <if test="loginUserAreaAssType == 2">
+        and a.canton_id in (${loginUserCantonIds})
+      </if>
+      <if test="loginUserAreaAssType == 3">
+        and a.area_id in (${loginUserAreaIds})
+      </if>
+    </where>
+    order by a.add_time desc
+  </select>
+
+    <select id="selectListWithParentByDto" parameterType="com.park.cloud.common.domain.dto.cms.DictParkingCityDto"
+            resultType="com.park.cloud.common.domain.vo.cms.DictParkingCityVO">
+        SELECT
+        a.parking_id as parkingId
+        ,a.parking_name as parkingName
+        ,a.park_code as parkCode
+        ,a.city_id as cityId
+        ,c.city_name as cityName
+        ,a.canton_id as cantonId
+        ,d.canton_name as cantonName
+        ,a.area_id as areaId
+        ,e.area_name as areaName
+        FROM dict_parking_city a
+        left join dict_city c on c.city_id = a.city_id
+        left join dict_canton d on d.canton_id = a.canton_id
+        left join dict_area e on e.area_id = a.area_id
+        <where>
+            1=1
+            <if test="parkingName != null">
+                and a.parking_name like CONCAT('%',#{parkingName},'%')
+            </if>
+            <if test="parkingMold != null">
+                and a.parking_mold = #{parkingMold}
+            </if>
+            <if test="areaId != null">
+                and a.area_id = #{areaId}
+            </if>
+            <if test="loginUserAreaAssType == 1">
+                and a.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and a.canton_id in (${loginUserCantonIds})
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and a.area_id in (${loginUserAreaIds})
+            </if>
+        </where>
+    </select>
+
+  <select id="selectDetailById" parameterType="java.lang.Integer"
+          resultType="com.park.cloud.common.domain.vo.cms.DictParkingCityVO">
+    SELECT
+    a.parking_id as parkingId
+    ,a.parking_name as parkingName
+    ,a.park_code as parkCode
+    ,a.city_id as cityId
+    ,c.city_name as cityName
+    ,a.canton_id as cantonId
+    ,d.canton_name as cantonName
+    ,a.area_id as areaId
+    ,e.area_name as areaName
+    ,a.monthly_ticket_limit as monthlyTicketLimit
+    ,a.pricing_strategy_id as pricingStrategyId
+    ,f.pricing_strategy_name as pricingStrategyName
+    ,a.monthly_strategy_id as monthlyStrategyId
+    ,g.monthly_strategy_name as monthlyStrategyName
+    ,a.parking_user as parkingUser
+    ,a.parking_pwd as parkingPwd
+    ,a.parking_mold as parkingMold
+    ,a.seation_address as seationAddress
+    ,a.total_parking_no as totalParkingNo
+    ,a.longitude as longitude
+    ,a.latitude as latitude
+    ,a.business_type as businessType
+    ,a.parking_remark as parkingRemark
+    ,ifnull(h.work_num, 0) as workNum
+    ,ifnull(h.non_work_num, 0) as nonWorkNum
+    ,ifnull(h.all_num, 0) as allNum
+    ,a.add_time as addTime
+    ,b.user_true_name as addUserName
+    FROM dict_parking_city a
+    left join sys_user b on b.user_id = a.add_user
+    left join dict_city c on c.city_id = a.city_id
+    left join dict_canton d on d.canton_id = a.canton_id
+    left join dict_area e on e.area_id = a.area_id
+    left join tra_pricing_strategy f on f.Pricing_strategy_id = a.pricing_strategy_id
+    left join tra_monthly_strategy g on g.monthly_strategy_id = a.monthly_strategy_id
+    left join tra_parking_monthly_info h on h.parking_section_id = a.parking_id and h.stats_month = date_format(now(), '%Y-%m') and h.parking_type = 0
+    <where>
+      a.parking_id = #{parkingId}
+    </where>
+  </select>
+</mapper>

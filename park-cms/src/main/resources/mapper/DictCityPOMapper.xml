@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.DictCityPOMapper">
+  <resultMap id="BaseResultMap" type="com.park.cloud.common.domain.po.dict.DictCityPO">
+    <id column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
+    <result column="city_remark" jdbcType="VARCHAR" property="cityRemark" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="add_user" jdbcType="INTEGER" property="addUser" />
+    <result column="city_lat" jdbcType="VARCHAR" property="cityLat" />
+    <result column="city_lng" jdbcType="VARCHAR" property="cityLng" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    city_id, city_name, city_code, city_remark, add_time, add_user, city_lat, city_lng
+  </sql>
+  <select id="selectByExample" parameterType="com.park.cloud.common.domain.po.dict.DictCityPOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from dict_city
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dict_city
+    where city_id = #{cityId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dict_city
+    where city_id = #{cityId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.park.cloud.common.domain.po.dict.DictCityPOExample">
+    delete from dict_city
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.park.cloud.common.domain.po.dict.DictCityPO">
+    insert into dict_city (city_id, city_name, city_code, 
+      city_remark, add_time, add_user, 
+      city_lat, city_lng)
+    values (#{cityId,jdbcType=INTEGER}, #{cityName,jdbcType=VARCHAR}, #{cityCode,jdbcType=VARCHAR}, 
+      #{cityRemark,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{addUser,jdbcType=INTEGER}, 
+      #{cityLat,jdbcType=VARCHAR}, #{cityLng,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.park.cloud.common.domain.po.dict.DictCityPO">
+    insert into dict_city
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cityId != null">
+        city_id,
+      </if>
+      <if test="cityName != null">
+        city_name,
+      </if>
+      <if test="cityCode != null">
+        city_code,
+      </if>
+      <if test="cityRemark != null">
+        city_remark,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="addUser != null">
+        add_user,
+      </if>
+      <if test="cityLat != null">
+        city_lat,
+      </if>
+      <if test="cityLng != null">
+        city_lng,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cityId != null">
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="cityName != null">
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null">
+        #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityRemark != null">
+        #{cityRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null">
+        #{addUser,jdbcType=INTEGER},
+      </if>
+      <if test="cityLat != null">
+        #{cityLat,jdbcType=VARCHAR},
+      </if>
+      <if test="cityLng != null">
+        #{cityLng,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.park.cloud.common.domain.po.dict.DictCityPOExample" resultType="java.lang.Long">
+    select count(*) from dict_city
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update dict_city
+    <set>
+      <if test="record.cityId != null">
+        city_id = #{record.cityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cityName != null">
+        city_name = #{record.cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityCode != null">
+        city_code = #{record.cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityRemark != null">
+        city_remark = #{record.cityRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null">
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addUser != null">
+        add_user = #{record.addUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.cityLat != null">
+        city_lat = #{record.cityLat,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityLng != null">
+        city_lng = #{record.cityLng,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update dict_city
+    set city_id = #{record.cityId,jdbcType=INTEGER},
+      city_name = #{record.cityName,jdbcType=VARCHAR},
+      city_code = #{record.cityCode,jdbcType=VARCHAR},
+      city_remark = #{record.cityRemark,jdbcType=VARCHAR},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      add_user = #{record.addUser,jdbcType=INTEGER},
+      city_lat = #{record.cityLat,jdbcType=VARCHAR},
+      city_lng = #{record.cityLng,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.park.cloud.common.domain.po.dict.DictCityPO">
+    update dict_city
+    <set>
+      <if test="cityName != null">
+        city_name = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null">
+        city_code = #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityRemark != null">
+        city_remark = #{cityRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null">
+        add_user = #{addUser,jdbcType=INTEGER},
+      </if>
+      <if test="cityLat != null">
+        city_lat = #{cityLat,jdbcType=VARCHAR},
+      </if>
+      <if test="cityLng != null">
+        city_lng = #{cityLng,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where city_id = #{cityId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.park.cloud.common.domain.po.dict.DictCityPO">
+    update dict_city
+    set city_name = #{cityName,jdbcType=VARCHAR},
+      city_code = #{cityCode,jdbcType=VARCHAR},
+      city_remark = #{cityRemark,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      add_user = #{addUser,jdbcType=INTEGER},
+      city_lat = #{cityLat,jdbcType=VARCHAR},
+      city_lng = #{cityLng,jdbcType=VARCHAR}
+    where city_id = #{cityId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByDto" parameterType="com.park.cloud.common.domain.dto.cms.DictCityDto"
+          resultType="com.park.cloud.common.domain.vo.cms.DictCityVO">
+    SELECT
+    a.city_id as cityId
+    ,a.city_name as cityName
+    ,a.city_code as cityCode
+    ,a.city_remark as cityRemark
+    ,a.city_lat as cityLat
+    ,a.city_lng as cityLng
+    ,a.add_time as addTime
+    ,d.`name` as provinceName
+    ,d.number_code as numberCode
+    ,b.user_true_name as addUserName
+    ,(select count(*) from dict_canton aa where aa.city_id = a.city_id) as cantonNum
+    FROM dict_city a
+    left join sys_user b on b.user_id = a.add_user
+    LEFT JOIN dict_city_code_table c on a.city_code = c.number_code
+    LEFT JOIN dict_city_code_table d on c.parent_number_code = d.number_code
+    <where>
+      1=1
+      <if test="cityName != null">
+        and a.city_name like CONCAT('%',#{cityName},'%')
+      </if>
+      <if test="loginUserAreaAssType == 1">
+        and a.city_id in (${loginUserCityIds})
+      </if>
+      <if test="loginUserAreaAssType == 2">
+        and a.city_id in (select distinct ca.city_id
+        from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+      </if>
+      <if test="loginUserAreaAssType == 3">
+        and a.city_id in (select distinct ca.city_id
+        from dict_canton ca, dict_area cb
+        where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+      </if>
+    </where>
+    order by a.add_time desc
+  </select>
+
+  <select id="selectListByDto" parameterType="com.park.cloud.common.domain.dto.cms.DictCityDto"
+          resultType="com.park.cloud.common.domain.vo.cms.DictCityListVO">
+    SELECT
+    a.city_id as cityId
+    ,a.city_name as cityName
+    ,a.city_code as cityCode
+    FROM dict_city a
+    <where>
+      1=1
+      <if test="cityName != null">
+        and a.city_name like CONCAT('%',#{cityName},'%')
+      </if>
+      <if test="loginUserAreaAssType == 1">
+        and a.city_id in (${loginUserCityIds})
+      </if>
+      <if test="loginUserAreaAssType == 2">
+        and a.city_id in (select distinct ca.city_id
+        from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+      </if>
+      <if test="loginUserAreaAssType == 3">
+        and a.city_id in (select distinct ca.city_id
+        from dict_canton ca, dict_area cb
+        where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+      </if>
+    </where>
+    order by a.add_time desc
+  </select>
+
+</mapper>
