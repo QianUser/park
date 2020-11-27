@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.MonthlyTicketMapper">
+    <resultMap id="BaseResultMap" type="com.park.cloud.common.domain.po.tra.TraMonthlyTicketListPO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="parking_section_id" jdbcType="INTEGER" property="parkingSectionId"/>
+        <result column="start_time" jdbcType="TIME" property="startTime"/>
+        <result column="end_time" jdbcType="TIME" property="endTime"/>
+        <result column="rate_date_type" jdbcType="INTEGER" property="rateDateType"/>
+        <result column="parking_type" jdbcType="INTEGER" property="parkingType"/>
+        <result column="monthly_rate_id" jdbcType="INTEGER" property="monthlyRateId"/>
+        <result column="start_date" jdbcType="DATE" property="startDate"/>
+        <result column="end_date" jdbcType="DATE" property="endDate"/>
+        <result column="park_user_id" jdbcType="VARCHAR" property="parkUserId"/>
+        <result column="month_num" jdbcType="INTEGER" property="monthNum"/>
+        <result column="plate_number" jdbcType="VARCHAR" property="plateNumber"/>
+        <result column="plate_type" jdbcType="INTEGER" property="plateType"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="operator" jdbcType="INTEGER" property="operator"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+    </resultMap>
+    <resultMap id="StrategyResultMap" type="com.park.cloud.common.domain.params.cms.MonthlyTrategyBackParams">
+        <result column="rate_date_type" jdbcType="INTEGER" property="rateDateType"/>
+        <result column="monthly_rate_id" jdbcType="INTEGER" property="monthlyRateId"/>
+    </resultMap>
+    <resultMap id="StrategyTimeMap" type="com.park.cloud.common.domain.vo.cms.MonthlyStrategyTimeVO">
+        <result column="start_time" jdbcType="TIME" property="startTime"/>
+        <result column="end_time" jdbcType="TIME" property="endTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, parking_section_id, start_time, end_time, rate_date_type, parking_type,
+        monthly_rate_id, start_date, end_date, park_user_id, month_num, plate_number,
+        plate_type, status, add_time, update_time, operator, user_id
+    </sql>
+
+    <select id="selectList" resultType="com.park.cloud.common.domain.vo.cms.MonthlyTicketVO"
+            parameterType="com.park.cloud.common.domain.params.cms.MonthlyTicketParams">
+        SELECT
+        t1.id id,
+        t1.parking_section_id parkingSectionId,
+        t1.start_time startTime,
+        t1.end_time endTime,
+        t1.rate_date_type rateDateType,
+        t1.parking_type parkingType,
+        t1.monthly_rate_id monthlyRateId,
+        t1.start_date startDate,
+        t1.end_date endDate,
+        t1.park_user_id parkUserId,
+        t1.month_num MonthNum,
+        t1.plate_number PlateNumber,
+        t1.plate_type plateType,
+        t1.status status,
+        t1.add_time addTime,
+        t1.update_time updateTime,
+        t1.operator operator,
+        t1.user_id userId,
+        t2.parking_name parkingName,
+        CASE
+        WHEN t1.operator=2 THEN(select user_name from sys_user where user_id=t1.user_id)
+        WHEN t1.operator=1 THEN(select mobile_number from meb_user where meb_user_id=t1.user_id)
+        END AS userName
+        FROM tra_monthly_ticket_user t1
+        LEFT join dict_parking_city t2 on t2.parking_id=t1.parking_section_id
+        <where>
+            <if test="parkingSectionId !='' and parkingSectionId != null">
+                and parking_section_id=#{parkingSectionId,jdbcType=INTEGER}
+            </if>
+            <if test="plateNumber != '' and plateNumber != null">
+                and plate_number=#{plateNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="rateDateType !='' and rateDateType != null">
+                and rate_date_type=#{rateDateType,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectBy" resultMap="BaseResultMap"
+            parameterType="com.park.cloud.common.domain.vo.user.MonthlyTicketSelectVO">
+        select
+        <include refid="Base_Column_List"/>
+        from tra_monthly_ticket_user
+        <where>
+            parking_section_id=#{parkingSectionId,jdbcType=INTEGER}
+            and plate_number=#{plateNumber,jdbcType=VARCHAR}
+            and plate_type=#{plateType,jdbcType=INTEGER}
+        </where>
+
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from tra_monthly_ticket_user
+        where id=#{id,jdbcType=INTEGER}
+    </select>
+
+    <insert id="add" parameterType="com.park.cloud.common.domain.vo.cms.MonthlyTicketListVO">
+        insert into tra_monthly_ticket_user
+        (id, parking_section_id, start_time, end_time, rate_date_type, parking_type,
+        monthly_rate_id, start_date, end_date, park_user_id, month_num, plate_number,
+        plate_type, status, add_time, update_time, operator, user_id)
+        values (null,#{parkingSectionId,jdbcType=INTEGER},#{startTime,jdbcType=TIME},#{endTime,jdbcType=TIME},
+        #{rateDateType,jdbcType=INTEGER},#{parkingType,jdbcType=INTEGER},#{monthlyRateId,jdbcType=INTEGER},
+        #{startDate,jdbcType=DATE},#{endDate,jdbcType=DATE},#{parkUserId,jdbcType=VARCHAR},
+        #{monthNum,jdbcType=INTEGER},#{plateNumber,jdbcType=VARCHAR},#{plateType,jdbcType=INTEGER},
+        #{status,jdbcType=INTEGER},#{addTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},
+        #{operator,jdbcType=INTEGER},#{userId,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="com.park.cloud.common.domain.vo.cms.MonthlyTicketListVO">
+        update tra_monthly_ticket_user
+        <set>
+            <if test="parkingSectionId!='' and parkingSectionId!=null">
+                parking_section_id=#{parkingSectionId,jdbcType=INTEGER},
+            </if>
+            <if test="startTime.toString()!='' and startTime.toString()!=null">
+                start_time=#{startTime,jdbcType=TIME},
+            </if>
+            <if test="endTime.toString()!='' and endTime.toString()!=null">
+                end_time=#{endTime,jdbcType=TIME},
+            </if>
+            <if test="rateDateType!='' and rateDateType!=null">
+                rate_date_type=#{rateDateType,jdbcType=INTEGER},
+            </if>
+            <if test="parkingType!='' and parkingType!=null">
+                parking_type=#{parkingType,jdbcType=INTEGER},
+            </if>
+            <if test="monthlyRateId!='' and monthlyRateId!=null">
+                monthly_rate_id=#{monthlyRateId,jdbcType=INTEGER},
+            </if>
+            <if test="parkUserId!='' and parkUserId!=null">
+                park_user_id=#{parkUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="monthNum!='' and monthNum!=null">
+                month_num=#{monthNum,jdbcType=INTEGER},
+            </if>
+            <if test="plateNumber!='' and plateNumber!=null">
+                plate_number=#{plateNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="plateType!='' and plateType!=null">
+                plate_type=#{plateType,jdbcType=INTEGER},
+            </if>
+            <if test="status!='' and status!=null">
+                status=#{status,jdbcType=INTEGER},
+            </if>
+            <if test="startDate.toString()!='' and startDate.toString()!=null">
+                start_date=#{startDate,jdbcType=DATE},
+            </if>
+            <if test="endDate.toString()!='' and endDate.toString()!=null">
+                end_date=#{endDate,jdbcType=DATE},
+            </if>
+            <if test="updateTime.toString()!='' and updateTime.toString()!=null">
+                update_time=#{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operator!='' and operator!=null">
+                operator=#{operator,jdbcType=INTEGER},
+            </if>
+            <if test="userId!='' and userId!=null">
+                user_id=#{userId,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where id=#{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from tra_monthly_ticket_user
+        where id=#{id,jdbcType=INTEGER}
+    </delete>
+
+    <select id="selectStrategyByParkingSectionId" parameterType="java.lang.Integer" resultMap="StrategyResultMap">
+        select rate_date_type,monthly_rate_id from tra_monthly_pricing_rate
+        where monthly_strategy_id=
+        (select monthly_strategy_id from dict_parking_city where parking_id=#{parkingSectionId,jdbcType=INTEGER})
+    </select>
+    <select id="selectStrategyByMonthlyRateId" parameterType="java.lang.Integer" resultMap="StrategyTimeMap">
+        select start_time,end_time from tra_monthly_pricing_rate
+        where monthly_rate_id=#{monthlyRateId,jdbcType=INTEGER}
+    </select>
+    <select id="selectParkingType" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select parking_type from dict_parking_city where parking_id=#{parkingSectionId,jdbcType=INTEGER}
+    </select>
+</mapper>

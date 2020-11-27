@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.park.cloud.cms.mapper.OpmPeccancyParkPOMapper" >
+  <resultMap id="BaseResultMap" type="com.park.cloud.common.domain.po.opm.OpmPeccancyParkPO" >
+    <id column="pecc_park_id" property="peccParkId" jdbcType="INTEGER" />
+    <result column="parking_name" property="parkingName" jdbcType="VARCHAR" />
+    <result column="pecc_plate_number" property="peccPlateNumber" jdbcType="VARCHAR" />
+    <result column="pecc_date" property="peccDate" jdbcType="TIMESTAMP" />
+    <result column="pecc_photo_url" property="peccPhotoUrl" jdbcType="VARCHAR" />
+    <result column="pecc_desc" property="peccDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pecc_park_id, parking_name, pecc_plate_number, pecc_date, pecc_photo_url, pecc_desc
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.park.cloud.common.domain.po.opm.OpmPeccancyParkPOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from opm_peccancy_park
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from opm_peccancy_park
+    where pecc_park_id = #{peccParkId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from opm_peccancy_park
+    where pecc_park_id = #{peccParkId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.park.cloud.common.domain.po.opm.OpmPeccancyParkPOExample" >
+    delete from opm_peccancy_park
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.park.cloud.common.domain.po.opm.OpmPeccancyParkPO" >
+    insert into opm_peccancy_park (pecc_park_id, parking_name, pecc_plate_number, 
+      pecc_date, pecc_photo_url, pecc_desc
+      )
+    values (#{peccParkId,jdbcType=INTEGER}, #{parkingName,jdbcType=VARCHAR}, #{peccPlateNumber,jdbcType=VARCHAR}, 
+      #{peccDate,jdbcType=TIMESTAMP}, #{peccPhotoUrl,jdbcType=VARCHAR}, #{peccDesc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.park.cloud.common.domain.po.opm.OpmPeccancyParkPO" >
+    insert into opm_peccancy_park
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="peccParkId != null" >
+        pecc_park_id,
+      </if>
+      <if test="parkingName != null" >
+        parking_name,
+      </if>
+      <if test="peccPlateNumber != null" >
+        pecc_plate_number,
+      </if>
+      <if test="peccDate != null" >
+        pecc_date,
+      </if>
+      <if test="peccPhotoUrl != null" >
+        pecc_photo_url,
+      </if>
+      <if test="peccDesc != null" >
+        pecc_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="peccParkId != null" >
+        #{peccParkId,jdbcType=INTEGER},
+      </if>
+      <if test="parkingName != null" >
+        #{parkingName,jdbcType=VARCHAR},
+      </if>
+      <if test="peccPlateNumber != null" >
+        #{peccPlateNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="peccDate != null" >
+        #{peccDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="peccPhotoUrl != null" >
+        #{peccPhotoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="peccDesc != null" >
+        #{peccDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.park.cloud.common.domain.po.opm.OpmPeccancyParkPOExample" resultType="java.lang.Integer" >
+    select count(*) from opm_peccancy_park
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update opm_peccancy_park
+    <set >
+      <if test="record.peccParkId != null" >
+        pecc_park_id = #{record.peccParkId,jdbcType=INTEGER},
+      </if>
+      <if test="record.parkingName != null" >
+        parking_name = #{record.parkingName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.peccPlateNumber != null" >
+        pecc_plate_number = #{record.peccPlateNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.peccDate != null" >
+        pecc_date = #{record.peccDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.peccPhotoUrl != null" >
+        pecc_photo_url = #{record.peccPhotoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.peccDesc != null" >
+        pecc_desc = #{record.peccDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update opm_peccancy_park
+    set pecc_park_id = #{record.peccParkId,jdbcType=INTEGER},
+      parking_name = #{record.parkingName,jdbcType=VARCHAR},
+      pecc_plate_number = #{record.peccPlateNumber,jdbcType=VARCHAR},
+      pecc_date = #{record.peccDate,jdbcType=TIMESTAMP},
+      pecc_photo_url = #{record.peccPhotoUrl,jdbcType=VARCHAR},
+      pecc_desc = #{record.peccDesc,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.park.cloud.common.domain.po.opm.OpmPeccancyParkPO" >
+    update opm_peccancy_park
+    <set >
+      <if test="parkingName != null" >
+        parking_name = #{parkingName,jdbcType=VARCHAR},
+      </if>
+      <if test="peccPlateNumber != null" >
+        pecc_plate_number = #{peccPlateNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="peccDate != null" >
+        pecc_date = #{peccDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="peccPhotoUrl != null" >
+        pecc_photo_url = #{peccPhotoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="peccDesc != null" >
+        pecc_desc = #{peccDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pecc_park_id = #{peccParkId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.park.cloud.common.domain.po.opm.OpmPeccancyParkPO" >
+    update opm_peccancy_park
+    set parking_name = #{parkingName,jdbcType=VARCHAR},
+      pecc_plate_number = #{peccPlateNumber,jdbcType=VARCHAR},
+      pecc_date = #{peccDate,jdbcType=TIMESTAMP},
+      pecc_photo_url = #{peccPhotoUrl,jdbcType=VARCHAR},
+      pecc_desc = #{peccDesc,jdbcType=VARCHAR}
+    where pecc_park_id = #{peccParkId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByDto" parameterType="com.park.cloud.common.domain.dto.cms.OpmPeccancyParkDto"
+          resultType="com.park.cloud.common.domain.vo.cms.OpmPeccancyParkVO">
+    select
+    a.pecc_park_id as peccParkId,
+    a.parking_name as parkingName,
+    a.pecc_plate_number as peccPlateNumber,
+    a.pecc_date as peccDate,
+    a.pecc_photo_url as peccPhotoUrl,
+    a.pecc_desc as peccDesc
+    from opm_peccancy_park a
+    <where>
+      1=1
+      <if test="peccParkId != null">
+        and pecc_park_id = #{peccParkId, jdbcType=INTEGER}
+      </if>
+      <if test="parkingName != null">
+        and parking_name like concat('%',#{parkingName, jdbcType=VARCHAR},'%')
+      </if>
+      <if test="peccPlateNumber != null">
+        and pecc_plate_number like concat('%',#{peccPlateNumber, jdbcType=VARCHAR},'%')
+      </if>
+      <if test="startDate != null and endDate != null">
+        and pecc_date between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+    order by pecc_date desc
+  </select>
+</mapper>

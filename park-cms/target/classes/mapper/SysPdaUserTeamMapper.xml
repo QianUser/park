@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.SysPdaUserTeamMapper">
+    <resultMap id="SysPdaUserTeamResultMap" type="com.park.cloud.common.domain.po.sys.SysPdaUserTeamPO">
+        <id column="pda_user_team_id" property="pdaUserTeamId"/>
+        <result column="team_name" property="teamName"/>
+        <result column="city" property="city"/>
+        <result column="canton" property="canton"/>
+        <result column="area" property="area"/>
+        <result column="section" property="section"/>
+        <result column="hasBerth" property="hasBerth"/>
+        <association property="hasBerth" column="pda_user_team_id" select="selectHasBerth">
+            <result column="hasBerth"/>
+        </association>
+        <collection property="pdaUserName" ofType="java.lang.String" column="pda_user_team_id" select="selectPdaUserName">
+            <result column="pda_user_name"/>
+        </collection>
+    </resultMap>
+    <resultMap id="SysPdaUserTeamListResultMap" type="com.park.cloud.common.domain.vo.cms.SysPdaUserTeamListVO">
+        <id column="pda_user_team_id" property="pdaUserTeamId"/>
+        <result column="team_name" property="teamName"/>
+    </resultMap>
+    <select id="selectUserTeam" parameterType="com.park.cloud.common.domain.dto.cms.SysPdaUserTeamDto"
+            resultMap="SysPdaUserTeamResultMap">
+        select a.pda_user_team_id,
+        team_name,
+        b.city_name as city,
+        c.canton_name as canton,
+        d.area_name as area,
+        e.section_name as section
+        from sys_pda_user_team a
+        left join dict_city b on a.city_id = b.city_id
+        left join dict_canton c on a.canton_id = c.canton_id
+        left join dict_area d on a.area_id = d.area_id
+        left join dict_section e on a.section_id = e.section_id
+        <where>
+            <if test="teamName != null and teamName != ''">
+                a.team_name like concat('%', #{teamName},'%')
+            </if>
+            <if test="cityId != null">
+                and a.city_id = #{cityId}
+            </if>
+            <if test="cantonId != null">
+                and a.canton_id = #{cantonId}
+            </if>
+            <if test="areaId != null">
+                and a.area_id = #{areaId}
+            </if>
+            <if test="sectionId != null">
+                and a.section_id = #{sectionId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectHasBerth" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select if(isnull(berth_id), 0, 1) as hasBerth from sys_pda_user_team_berth where pda_user_team_id = #{id} limit 1
+    </select>
+
+    <select id="selectPdaUserName" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select pda_user_true_name from sys_pda_user where pda_user_team_id = #{id} and pda_user_status = 1
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="SysPdaUserTeamResultMap">
+        select a.pda_user_team_id,
+               team_name,
+               b.city_name    as city,
+               c.canton_name  as canton,
+               d.area_name    as area,
+               e.section_name as section,
+               f.pda_user_name
+        from sys_pda_user_team a
+                 left join dict_city b on a.city_id = b.city_id
+                 left join dict_canton c on a.canton_id = c.canton_id
+                 left join dict_area d on a.area_id = d.area_id
+                 left join dict_section e on a.section_id = e.section_id
+                 left join sys_pda_user f on a.pda_user_team_id = f.pda_user_team_id
+        where a.pda_user_team_id = #{pdaUserTeamId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.park.cloud.common.domain.po.sys.SysPdaUserTeamPO">
+        insert into sys_pda_user_team
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teamName != null">
+                team_name,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="cantonId != null">
+                canton_id,
+            </if>
+            <if test="areaId != null">
+                area_id,
+            </if>
+            <if test="sectionId != null">
+                section_id,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="addUser != null">
+                add_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teamName != null">
+                #{teamName,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=INTEGER},
+            </if>
+            <if test="cantonId != null">
+                #{cantonId,jdbcType=INTEGER},
+            </if>
+            <if test="areaId != null">
+                #{areaId,jdbcType=INTEGER},
+            </if>
+            <if test="sectionId != null">
+                #{sectionId,jdbcType=INTEGER},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addUser != null">
+                #{addUser,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.park.cloud.common.domain.po.sys.SysPdaUserTeamPO">
+        update sys_pda_user_team
+        <set>
+            <if test="teamName != null">
+                team_name = #{teamName,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=INTEGER},
+            </if>
+            <if test="cantonId != null">
+                canton_id = #{cantonId,jdbcType=INTEGER},
+            </if>
+            <if test="areaId != null">
+                area_id = #{areaId,jdbcType=INTEGER},
+            </if>
+            <if test="sectionId != null">
+                section_id = #{sectionId,jdbcType=INTEGER},
+            </if>
+            <if test="addTime != null">
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addUser != null">
+                add_user = #{addUser,jdbcType=INTEGER},
+            </if>
+        </set>
+        where pda_user_team_id = #{pdaUserTeamId,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteByPrimaryKey" parameterType="com.park.cloud.common.domain.po.sys.SysPdaUserTeamPO">
+        delete
+        from sys_pda_user_team
+        where pda_user_team_id = #{pdaUserTeamId,jdbcType=INTEGER}
+    </delete>
+
+    <select id="selectListByDto" parameterType="com.park.cloud.common.domain.dto.cms.SysPdaUserTeamDto"
+            resultMap="SysPdaUserTeamListResultMap">
+        select a.pda_user_team_id, a.team_name
+        from sys_pda_user_team a
+        <where>
+            <if test="teamName != null">
+                a.team_name like concat('%', #{teamName},'%')
+            </if>
+            <if test="cityId != null">
+                and a.city_id = #{cityId}
+            </if>
+            <if test="cantonId != null">
+                and a.canton_id = #{cantonId}
+            </if>
+            <if test="areaId != null">
+                and a.area_id = #{areaId}
+            </if>
+            <if test="sectionId != null">
+                and a.section_id = #{sectionId}
+            </if>
+        </where>
+    </select>
+    <select id="selectUserTeamBerth" parameterType="com.park.cloud.common.domain.dto.cms.SysPdaUserTeamBerthDto"
+            resultType="com.park.cloud.common.domain.vo.cms.SysPdaUserTeamBerthVO">
+        select distinct a.pda_user_team_id                                                                 as pdaUserTeamId,
+                        b.berth_id                                                                         as berthId,
+                        b.berth_code                                                                       as berthCode,
+                        if(isnull(c.pda_user_team_id), 0, if(#{pdaUserTeamId} = c.pda_user_team_id, 1, 2)) as ifManage
+        from sys_pda_user_team a
+                 inner join dict_berth_city b on a.section_id = b.section_id
+                 left join sys_pda_user_team_berth c on b.berth_id = c.berth_id
+        where a.pda_user_team_id = #{pdaUserTeamId}
+    </select>
+    <select id="selectOtherTeam" parameterType="com.park.cloud.common.domain.dto.cms.SysPdaUserTeamBerthDto"
+            resultType="java.lang.Integer">
+        select count(*) from sys_pda_user_team_berth where pda_user_team_id != #{pdaUserTeamId} and berth_id in
+        <foreach collection="berthIds" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="deleteTeamBerth" parameterType="com.park.cloud.common.domain.dto.cms.SysPdaUserTeamBerthDto">
+        delete
+        from sys_pda_user_team_berth
+        where pda_user_team_id = #{pdaUserTeamId}
+    </delete>
+
+    <insert id="insertTeamBerth" parameterType="com.park.cloud.common.domain.po.sys.SysPdaUserTeamBerthPO">
+        insert into sys_pda_user_team_berth (pda_user_team_id, berth_id, add_time, add_user) values
+        <foreach collection="berthIds" separator="," item="item">
+            (#{pdaUserTeamId}, #{item}, now(), #{loginSysUserId})
+        </foreach>
+    </insert>
+</mapper>

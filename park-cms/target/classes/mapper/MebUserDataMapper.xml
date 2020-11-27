@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.MebUserDataMapper">
+    <resultMap id="MebUserDataResultMap" type="com.park.cloud.common.domain.po.meb.MebUserDataPO">
+        <result column="statisticsDay" property="statisticsDay"/>
+        <result column="totalCount" property="totalCount"/>
+        <result column="todayNewCount" property="todayNewCount"/>
+        <result column="todayTradeCount" property="todayTradeCount"/>
+        <result column="todayActiveCount" property="todayActiveCount"/>
+    </resultMap>
+    <select id="selectUserCount" resultMap="MebUserDataResultMap">
+        select sum_num         as totalCount,
+               add_num         as todayNewCount,
+               transaction_num as todayTradeCount,
+               active_user_num as todayActiveCount
+        from rep_meb_user_by_day
+        where to_days(add_time) = to_days(now())
+    </select>
+    <select id="selectUserData" parameterType="com.park.cloud.common.domain.dto.cms.MebUserDataDto" resultMap="MebUserDataResultMap">
+        select sum_num         as totalCount,
+               add_num         as todayNewCount,
+               transaction_num as todayTradeCount,
+               active_user_num as todayActiveCount,
+               statistics_day  as statisticsDay
+        from rep_meb_user_by_day
+        where PERIOD_DIFF(date_format(#{month}, '%Y%m'), date_format(add_time, '%Y%m')) = 0
+    </select>
+    <select id="selectNewUserDataMonth" parameterType="java.util.Date" resultType="com.park.cloud.common.domain.vo.cms.MebUserDataDayVO">
+        select ANY_VALUE(DATE_FORMAT(add_time, '%m-%d')) as date, ANY_VALUE(add_num) as count
+        from rep_meb_user_by_day
+        where PERIOD_DIFF(date_format(#{_parameter}, '%Y%m'), date_format(add_time, '%Y%m')) = 0
+        group by to_days(add_time)
+    </select>
+    <select id="selectTradeUserDataMonth" parameterType="java.util.Date" resultType="com.park.cloud.common.domain.vo.cms.MebUserDataDayVO">
+        select ANY_VALUE(DATE_FORMAT(add_time, '%m-%d')) as date, ANY_VALUE(transaction_num) as count
+        from rep_meb_user_by_day
+        where PERIOD_DIFF(date_format(#{_parameter}, '%Y%m'), date_format(add_time, '%Y%m')) = 0
+        group by to_days(add_time)
+    </select>
+    <select id="selectActiveUserDataMonth" parameterType="java.util.Date" resultType="com.park.cloud.common.domain.vo.cms.MebUserDataDayVO">
+        select ANY_VALUE(DATE_FORMAT(add_time, '%m-%d')) as date, ANY_VALUE(active_user_num) as count
+        from rep_meb_user_by_day
+        where PERIOD_DIFF(date_format(#{_parameter}, '%Y%m'), date_format(add_time, '%Y%m')) = 0
+        group by to_days(add_time)
+    </select>
+
+</mapper>

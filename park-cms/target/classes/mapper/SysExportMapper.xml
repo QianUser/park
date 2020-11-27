@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.SysExportMapper">
+    <resultMap id="SysExportResultMap" type="com.park.cloud.common.domain.po.sys.SysExportPO">
+        <id column="export_id" property="exportId"/>
+        <result column="export_content" property="exportContent"/>
+        <result column="export_progress" property="exportProgress"/>
+        <result column="add_time" property="addTime"/>
+    </resultMap>
+    <insert id="insertExport" parameterType="com.park.cloud.common.domain.po.sys.SysExportPO" useGeneratedKeys="true" keyProperty="exportId">
+        insert into sys_export (export_content, export_progress, export_service, file_url, add_time, add_user)
+        values(#{exportContent}, #{exportProgress}, #{exportService}, #{fileUrl}, #{addTime}, #{addUser})
+    </insert>
+    <update id="updateExport" parameterType="com.park.cloud.common.domain.po.sys.SysExportPO">
+        update sys_export
+        set export_progress = #{exportProgress},
+            update_time     = now()
+        where export_id = #{exportId}
+    </update>
+    <delete id="delete" parameterType="com.park.cloud.common.domain.dto.cms.SysExportDto">
+        delete from sys_export where export_id = #{exportId}
+    </delete>
+    <delete id="deleteBatch" parameterType="com.park.cloud.common.domain.dto.cms.SysExportDto">
+        delete from sys_export where export_id in
+        <foreach collection="exportIds" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </delete>
+    <select id="selectExport" parameterType="com.park.cloud.common.domain.dto.cms.SysExportDto"
+            resultMap="SysExportResultMap">
+        select export_id, export_content, export_progress, add_time
+        from sys_export
+        where add_user = #{loginSysUserId}
+        order by add_time desc
+    </select>
+    <select id="selectExportById" parameterType="java.lang.Integer" resultType="com.park.cloud.common.domain.po.sys.SysExportPO">
+        select export_content as exportContent, file_url as fileUrl
+        from sys_export
+        where export_id = #{_parameter}
+    </select>
+    <select id="selectExportByIds" parameterType="java.util.ArrayList" resultType="com.park.cloud.common.domain.po.sys.SysExportPO">
+        select export_content as exportContent, file_url as fileUrl
+        from sys_export
+        where export_id in
+        <foreach collection="list" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

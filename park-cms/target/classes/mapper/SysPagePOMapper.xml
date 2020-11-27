@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.SysPagePOMapper">
+  <resultMap id="BaseResultMap" type="com.park.cloud.common.domain.po.sys.SysPagePO">
+    <id column="page_id" jdbcType="INTEGER" property="pageId" />
+    <result column="page_name" jdbcType="VARCHAR" property="pageName" />
+    <result column="page_remark" jdbcType="VARCHAR" property="pageRemark" />
+    <result column="page_url" jdbcType="VARCHAR" property="pageUrl" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="page_icon" jdbcType="VARCHAR" property="pageIcon" />
+    <result column="page_sort" jdbcType="INTEGER" property="pageSort" />
+    <result column="page_level" jdbcType="INTEGER" property="pageLevel" />
+    <result column="page_type" jdbcType="INTEGER" property="pageType" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    page_id, page_name, page_remark, page_url, parent_id, page_icon, page_sort, page_level, 
+    page_type
+  </sql>
+  <select id="selectByExample" parameterType="com.park.cloud.common.domain.po.sys.SysPagePOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_page
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_page
+    where page_id = #{pageId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_page
+    where page_id = #{pageId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.park.cloud.common.domain.po.sys.SysPagePOExample">
+    delete from sys_page
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.park.cloud.common.domain.po.sys.SysPagePO">
+    insert into sys_page (page_id, page_name, page_remark, 
+      page_url, parent_id, page_icon, 
+      page_sort, page_level, page_type
+      )
+    values (#{pageId,jdbcType=INTEGER}, #{pageName,jdbcType=VARCHAR}, #{pageRemark,jdbcType=VARCHAR}, 
+      #{pageUrl,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{pageIcon,jdbcType=VARCHAR}, 
+      #{pageSort,jdbcType=INTEGER}, #{pageLevel,jdbcType=INTEGER}, #{pageType,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.park.cloud.common.domain.po.sys.SysPagePO">
+    insert into sys_page
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pageId != null">
+        page_id,
+      </if>
+      <if test="pageName != null">
+        page_name,
+      </if>
+      <if test="pageRemark != null">
+        page_remark,
+      </if>
+      <if test="pageUrl != null">
+        page_url,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="pageIcon != null">
+        page_icon,
+      </if>
+      <if test="pageSort != null">
+        page_sort,
+      </if>
+      <if test="pageLevel != null">
+        page_level,
+      </if>
+      <if test="pageType != null">
+        page_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pageId != null">
+        #{pageId,jdbcType=INTEGER},
+      </if>
+      <if test="pageName != null">
+        #{pageName,jdbcType=VARCHAR},
+      </if>
+      <if test="pageRemark != null">
+        #{pageRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="pageUrl != null">
+        #{pageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="pageIcon != null">
+        #{pageIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="pageSort != null">
+        #{pageSort,jdbcType=INTEGER},
+      </if>
+      <if test="pageLevel != null">
+        #{pageLevel,jdbcType=INTEGER},
+      </if>
+      <if test="pageType != null">
+        #{pageType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.park.cloud.common.domain.po.sys.SysPagePOExample" resultType="java.lang.Long">
+    select count(*) from sys_page
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sys_page
+    <set>
+      <if test="record.pageId != null">
+        page_id = #{record.pageId,jdbcType=INTEGER},
+      </if>
+      <if test="record.pageName != null">
+        page_name = #{record.pageName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pageRemark != null">
+        page_remark = #{record.pageRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pageUrl != null">
+        page_url = #{record.pageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null">
+        parent_id = #{record.parentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.pageIcon != null">
+        page_icon = #{record.pageIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pageSort != null">
+        page_sort = #{record.pageSort,jdbcType=INTEGER},
+      </if>
+      <if test="record.pageLevel != null">
+        page_level = #{record.pageLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.pageType != null">
+        page_type = #{record.pageType,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sys_page
+    set page_id = #{record.pageId,jdbcType=INTEGER},
+      page_name = #{record.pageName,jdbcType=VARCHAR},
+      page_remark = #{record.pageRemark,jdbcType=VARCHAR},
+      page_url = #{record.pageUrl,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=INTEGER},
+      page_icon = #{record.pageIcon,jdbcType=VARCHAR},
+      page_sort = #{record.pageSort,jdbcType=INTEGER},
+      page_level = #{record.pageLevel,jdbcType=INTEGER},
+      page_type = #{record.pageType,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.park.cloud.common.domain.po.sys.SysPagePO">
+    update sys_page
+    <set>
+      <if test="pageName != null">
+        page_name = #{pageName,jdbcType=VARCHAR},
+      </if>
+      <if test="pageRemark != null">
+        page_remark = #{pageRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="pageUrl != null">
+        page_url = #{pageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="pageIcon != null">
+        page_icon = #{pageIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="pageSort != null">
+        page_sort = #{pageSort,jdbcType=INTEGER},
+      </if>
+      <if test="pageLevel != null">
+        page_level = #{pageLevel,jdbcType=INTEGER},
+      </if>
+      <if test="pageType != null">
+        page_type = #{pageType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where page_id = #{pageId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.park.cloud.common.domain.po.sys.SysPagePO">
+    update sys_page
+    set page_name = #{pageName,jdbcType=VARCHAR},
+      page_remark = #{pageRemark,jdbcType=VARCHAR},
+      page_url = #{pageUrl,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      page_icon = #{pageIcon,jdbcType=VARCHAR},
+      page_sort = #{pageSort,jdbcType=INTEGER},
+      page_level = #{pageLevel,jdbcType=INTEGER},
+      page_type = #{pageType,jdbcType=INTEGER}
+    where page_id = #{pageId,jdbcType=INTEGER}
+  </update>
+</mapper>

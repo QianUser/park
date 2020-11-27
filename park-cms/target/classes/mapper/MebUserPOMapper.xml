@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.MebUserPOMapper">
+  <resultMap id="BaseResultMap" type="com.park.cloud.common.domain.po.meb.MebUserPO">
+    <id column="meb_user_id" jdbcType="INTEGER" property="mebUserId" />
+    <result column="park_user_id" jdbcType="VARCHAR" property="parkUserId" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
+    <result column="mobile_number" jdbcType="VARCHAR" property="mobileNumber" />
+    <result column="mobile_code" jdbcType="VARCHAR" property="mobileCode" />
+    <result column="user_nickname" jdbcType="VARCHAR" property="userNickname" />
+    <result column="user_open_id" jdbcType="VARCHAR" property="userOpenId" />
+    <result column="login_pwd" jdbcType="VARCHAR" property="loginPwd" />
+    <result column="pay_pwd" jdbcType="VARCHAR" property="payPwd" />
+    <result column="plate_number" jdbcType="VARCHAR" property="plateNumber" />
+    <result column="user_true_name" jdbcType="VARCHAR" property="userTrueName" />
+    <result column="user_idcard_number" jdbcType="VARCHAR" property="userIdcardNumber" />
+    <result column="user_sex" jdbcType="INTEGER" property="userSex" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="user_status" jdbcType="INTEGER" property="userStatus" />
+    <result column="bank_type" jdbcType="VARCHAR" property="bankType" />
+    <result column="bank_card" jdbcType="VARCHAR" property="bankCard" />
+    <result column="bank_phone" jdbcType="VARCHAR" property="bankPhone" />
+    <result column="acct_status" jdbcType="VARCHAR" property="acctStatus" />
+    <result column="cancel_time" jdbcType="TIMESTAMP" property="cancelTime" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="is_bind_bank" jdbcType="BIT" property="isBindBank" />
+    <result column="illegal_times" jdbcType="INTEGER" property="illegalTimes" />
+    <result column="mobile_operator" jdbcType="VARCHAR" property="mobileOperator" />
+    <result column="number_attribution" jdbcType="VARCHAR" property="numberAttribution" />
+    <result column="mobile_models" jdbcType="VARCHAR" property="mobileModels" />
+    <result column="mobile_system" jdbcType="VARCHAR" property="mobileSystem" />
+    <result column="app_version" jdbcType="VARCHAR" property="appVersion" />
+    <result column="is_special" jdbcType="INTEGER" property="isSpecial" />
+    <result column="idcard_scan_file_path" jdbcType="VARCHAR" property="idcardScanFilePath" />
+    <result column="idcard_scan_anti_file_path" jdbcType="VARCHAR" property="idcardScanAntiFilePath" />
+    <result column="if_first_top_eccancy" jdbcType="INTEGER" property="ifFirstTopEccancy" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    meb_user_id, park_user_id, user_type, mobile_number, mobile_code, user_nickname,
+    user_open_id, login_pwd, pay_pwd, plate_number, user_true_name, user_idcard_number,
+    user_sex, add_time, user_status, bank_type, bank_card, bank_phone, acct_status, cancel_time,
+    memo, is_bind_bank, illegal_times, mobile_operator, number_attribution, mobile_models,
+    mobile_system, app_version, is_special, idcard_scan_file_path, idcard_scan_anti_file_path,
+    if_first_top_eccancy
+  </sql>
+  <select id="selectByExample" parameterType="com.park.cloud.common.domain.po.meb.MebUserPOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from meb_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from meb_user
+    where meb_user_id = #{mebUserId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from meb_user
+    where meb_user_id = #{mebUserId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.park.cloud.common.domain.po.meb.MebUserPOExample">
+    delete from meb_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.park.cloud.common.domain.po.meb.MebUserPO">
+    insert into meb_user (meb_user_id, park_user_id, user_type,
+    mobile_number, mobile_code, user_nickname,
+    user_open_id, login_pwd, pay_pwd,
+    plate_number, user_true_name, user_idcard_number,
+    user_sex, add_time, user_status,
+    bank_type, bank_card, bank_phone,
+    acct_status, cancel_time, memo,
+    is_bind_bank, illegal_times, mobile_operator,
+    number_attribution, mobile_models, mobile_system,
+    app_version, is_special, idcard_scan_file_path,
+    idcard_scan_anti_file_path, if_first_top_eccancy
+    )
+    values (#{mebUserId,jdbcType=INTEGER}, #{parkUserId,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER},
+    #{mobileNumber,jdbcType=VARCHAR}, #{mobileCode,jdbcType=VARCHAR}, #{userNickname,jdbcType=VARCHAR},
+    #{userOpenId,jdbcType=VARCHAR}, #{loginPwd,jdbcType=VARCHAR}, #{payPwd,jdbcType=VARCHAR},
+    #{plateNumber,jdbcType=VARCHAR}, #{userTrueName,jdbcType=VARCHAR}, #{userIdcardNumber,jdbcType=VARCHAR},
+    #{userSex,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, #{userStatus,jdbcType=INTEGER},
+    #{bankType,jdbcType=VARCHAR}, #{bankCard,jdbcType=VARCHAR}, #{bankPhone,jdbcType=VARCHAR},
+    #{acctStatus,jdbcType=VARCHAR}, #{cancelTime,jdbcType=TIMESTAMP}, #{memo,jdbcType=VARCHAR},
+    #{isBindBank,jdbcType=BIT}, #{illegalTimes,jdbcType=INTEGER}, #{mobileOperator,jdbcType=VARCHAR},
+    #{numberAttribution,jdbcType=VARCHAR}, #{mobileModels,jdbcType=VARCHAR}, #{mobileSystem,jdbcType=VARCHAR},
+    #{appVersion,jdbcType=VARCHAR}, #{isSpecial,jdbcType=INTEGER}, #{idcardScanFilePath,jdbcType=VARCHAR},
+    #{idcardScanAntiFilePath,jdbcType=VARCHAR}, #{ifFirstTopEccancy,jdbcType=INTEGER}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.park.cloud.common.domain.po.meb.MebUserPO">
+    insert into meb_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mebUserId != null">
+        meb_user_id,
+      </if>
+      <if test="parkUserId != null">
+        park_user_id,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+      <if test="mobileNumber != null">
+        mobile_number,
+      </if>
+      <if test="mobileCode != null">
+        mobile_code,
+      </if>
+      <if test="userNickname != null">
+        user_nickname,
+      </if>
+      <if test="userOpenId != null">
+        user_open_id,
+      </if>
+      <if test="loginPwd != null">
+        login_pwd,
+      </if>
+      <if test="payPwd != null">
+        pay_pwd,
+      </if>
+      <if test="plateNumber != null">
+        plate_number,
+      </if>
+      <if test="userTrueName != null">
+        user_true_name,
+      </if>
+      <if test="userIdcardNumber != null">
+        user_idcard_number,
+      </if>
+      <if test="userSex != null">
+        user_sex,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="userStatus != null">
+        user_status,
+      </if>
+      <if test="bankType != null">
+        bank_type,
+      </if>
+      <if test="bankCard != null">
+        bank_card,
+      </if>
+      <if test="bankPhone != null">
+        bank_phone,
+      </if>
+      <if test="acctStatus != null">
+        acct_status,
+      </if>
+      <if test="cancelTime != null">
+        cancel_time,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+      <if test="isBindBank != null">
+        is_bind_bank,
+      </if>
+      <if test="illegalTimes != null">
+        illegal_times,
+      </if>
+      <if test="mobileOperator != null">
+        mobile_operator,
+      </if>
+      <if test="numberAttribution != null">
+        number_attribution,
+      </if>
+      <if test="mobileModels != null">
+        mobile_models,
+      </if>
+      <if test="mobileSystem != null">
+        mobile_system,
+      </if>
+      <if test="appVersion != null">
+        app_version,
+      </if>
+      <if test="isSpecial != null">
+        is_special,
+      </if>
+      <if test="idcardScanFilePath != null">
+        idcard_scan_file_path,
+      </if>
+      <if test="idcardScanAntiFilePath != null">
+        idcard_scan_anti_file_path,
+      </if>
+      <if test="ifFirstTopEccancy != null">
+        if_first_top_eccancy,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mebUserId != null">
+        #{mebUserId,jdbcType=INTEGER},
+      </if>
+      <if test="parkUserId != null">
+        #{parkUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="mobileNumber != null">
+        #{mobileNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileCode != null">
+        #{mobileCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userNickname != null">
+        #{userNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="userOpenId != null">
+        #{userOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPwd != null">
+        #{loginPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="payPwd != null">
+        #{payPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="plateNumber != null">
+        #{plateNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="userTrueName != null">
+        #{userTrueName,jdbcType=VARCHAR},
+      </if>
+      <if test="userIdcardNumber != null">
+        #{userIdcardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null">
+        #{userSex,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userStatus != null">
+        #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="bankType != null">
+        #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null">
+        #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="bankPhone != null">
+        #{bankPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="acctStatus != null">
+        #{acctStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelTime != null">
+        #{cancelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="isBindBank != null">
+        #{isBindBank,jdbcType=BIT},
+      </if>
+      <if test="illegalTimes != null">
+        #{illegalTimes,jdbcType=INTEGER},
+      </if>
+      <if test="mobileOperator != null">
+        #{mobileOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="numberAttribution != null">
+        #{numberAttribution,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileModels != null">
+        #{mobileModels,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileSystem != null">
+        #{mobileSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="appVersion != null">
+        #{appVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="isSpecial != null">
+        #{isSpecial,jdbcType=INTEGER},
+      </if>
+      <if test="idcardScanFilePath != null">
+        #{idcardScanFilePath,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardScanAntiFilePath != null">
+        #{idcardScanAntiFilePath,jdbcType=VARCHAR},
+      </if>
+      <if test="ifFirstTopEccancy != null">
+        #{ifFirstTopEccancy,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.park.cloud.common.domain.po.meb.MebUserPOExample" resultType="java.lang.Long">
+    select count(*) from meb_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update meb_user
+    <set>
+      <if test="record.mebUserId != null">
+        meb_user_id = #{record.mebUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.parkUserId != null">
+        park_user_id = #{record.parkUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userType != null">
+        user_type = #{record.userType,jdbcType=INTEGER},
+      </if>
+      <if test="record.mobileNumber != null">
+        mobile_number = #{record.mobileNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobileCode != null">
+        mobile_code = #{record.mobileCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userNickname != null">
+        user_nickname = #{record.userNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userOpenId != null">
+        user_open_id = #{record.userOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginPwd != null">
+        login_pwd = #{record.loginPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payPwd != null">
+        pay_pwd = #{record.payPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.plateNumber != null">
+        plate_number = #{record.plateNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userTrueName != null">
+        user_true_name = #{record.userTrueName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userIdcardNumber != null">
+        user_idcard_number = #{record.userIdcardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userSex != null">
+        user_sex = #{record.userSex,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null">
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userStatus != null">
+        user_status = #{record.userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.bankType != null">
+        bank_type = #{record.bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankCard != null">
+        bank_card = #{record.bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankPhone != null">
+        bank_phone = #{record.bankPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acctStatus != null">
+        acct_status = #{record.acctStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cancelTime != null">
+        cancel_time = #{record.cancelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.memo != null">
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isBindBank != null">
+        is_bind_bank = #{record.isBindBank,jdbcType=BIT},
+      </if>
+      <if test="record.illegalTimes != null">
+        illegal_times = #{record.illegalTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.mobileOperator != null">
+        mobile_operator = #{record.mobileOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.numberAttribution != null">
+        number_attribution = #{record.numberAttribution,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobileModels != null">
+        mobile_models = #{record.mobileModels,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobileSystem != null">
+        mobile_system = #{record.mobileSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appVersion != null">
+        app_version = #{record.appVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isSpecial != null">
+        is_special = #{record.isSpecial,jdbcType=INTEGER},
+      </if>
+      <if test="record.idcardScanFilePath != null">
+        idcard_scan_file_path = #{record.idcardScanFilePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcardScanAntiFilePath != null">
+        idcard_scan_anti_file_path = #{record.idcardScanAntiFilePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ifFirstTopEccancy != null">
+        if_first_top_eccancy = #{record.ifFirstTopEccancy,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update meb_user
+    set meb_user_id = #{record.mebUserId,jdbcType=INTEGER},
+    park_user_id = #{record.parkUserId,jdbcType=VARCHAR},
+    user_type = #{record.userType,jdbcType=INTEGER},
+    mobile_number = #{record.mobileNumber,jdbcType=VARCHAR},
+    mobile_code = #{record.mobileCode,jdbcType=VARCHAR},
+    user_nickname = #{record.userNickname,jdbcType=VARCHAR},
+    user_open_id = #{record.userOpenId,jdbcType=VARCHAR},
+    login_pwd = #{record.loginPwd,jdbcType=VARCHAR},
+    pay_pwd = #{record.payPwd,jdbcType=VARCHAR},
+    plate_number = #{record.plateNumber,jdbcType=VARCHAR},
+    user_true_name = #{record.userTrueName,jdbcType=VARCHAR},
+    user_idcard_number = #{record.userIdcardNumber,jdbcType=VARCHAR},
+    user_sex = #{record.userSex,jdbcType=INTEGER},
+    add_time = #{record.addTime,jdbcType=TIMESTAMP},
+    user_status = #{record.userStatus,jdbcType=INTEGER},
+    bank_type = #{record.bankType,jdbcType=VARCHAR},
+    bank_card = #{record.bankCard,jdbcType=VARCHAR},
+    bank_phone = #{record.bankPhone,jdbcType=VARCHAR},
+    acct_status = #{record.acctStatus,jdbcType=VARCHAR},
+    cancel_time = #{record.cancelTime,jdbcType=TIMESTAMP},
+    memo = #{record.memo,jdbcType=VARCHAR},
+    is_bind_bank = #{record.isBindBank,jdbcType=BIT},
+    illegal_times = #{record.illegalTimes,jdbcType=INTEGER},
+    mobile_operator = #{record.mobileOperator,jdbcType=VARCHAR},
+    number_attribution = #{record.numberAttribution,jdbcType=VARCHAR},
+    mobile_models = #{record.mobileModels,jdbcType=VARCHAR},
+    mobile_system = #{record.mobileSystem,jdbcType=VARCHAR},
+    app_version = #{record.appVersion,jdbcType=VARCHAR},
+    is_special = #{record.isSpecial,jdbcType=INTEGER},
+    idcard_scan_file_path = #{record.idcardScanFilePath,jdbcType=VARCHAR},
+    idcard_scan_anti_file_path = #{record.idcardScanAntiFilePath,jdbcType=VARCHAR},
+    if_first_top_eccancy = #{record.ifFirstTopEccancy,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.park.cloud.common.domain.po.meb.MebUserPO">
+    update meb_user
+    <set>
+      <if test="parkUserId != null">
+        park_user_id = #{parkUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="mobileNumber != null">
+        mobile_number = #{mobileNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileCode != null">
+        mobile_code = #{mobileCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userNickname != null">
+        user_nickname = #{userNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="userOpenId != null">
+        user_open_id = #{userOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPwd != null">
+        login_pwd = #{loginPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="payPwd != null">
+        pay_pwd = #{payPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="plateNumber != null">
+        plate_number = #{plateNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="userTrueName != null">
+        user_true_name = #{userTrueName,jdbcType=VARCHAR},
+      </if>
+      <if test="userIdcardNumber != null">
+        user_idcard_number = #{userIdcardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null">
+        user_sex = #{userSex,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userStatus != null">
+        user_status = #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="bankType != null">
+        bank_type = #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null">
+        bank_card = #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="bankPhone != null">
+        bank_phone = #{bankPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="acctStatus != null">
+        acct_status = #{acctStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelTime != null">
+        cancel_time = #{cancelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="isBindBank != null">
+        is_bind_bank = #{isBindBank,jdbcType=BIT},
+      </if>
+      <if test="illegalTimes != null">
+        illegal_times = #{illegalTimes,jdbcType=INTEGER},
+      </if>
+      <if test="mobileOperator != null">
+        mobile_operator = #{mobileOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="numberAttribution != null">
+        number_attribution = #{numberAttribution,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileModels != null">
+        mobile_models = #{mobileModels,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileSystem != null">
+        mobile_system = #{mobileSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="appVersion != null">
+        app_version = #{appVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="isSpecial != null">
+        is_special = #{isSpecial,jdbcType=INTEGER},
+      </if>
+      <if test="idcardScanFilePath != null">
+        idcard_scan_file_path = #{idcardScanFilePath,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardScanAntiFilePath != null">
+        idcard_scan_anti_file_path = #{idcardScanAntiFilePath,jdbcType=VARCHAR},
+      </if>
+      <if test="ifFirstTopEccancy != null">
+        if_first_top_eccancy = #{ifFirstTopEccancy,jdbcType=INTEGER},
+      </if>
+    </set>
+    where meb_user_id = #{mebUserId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.park.cloud.common.domain.po.meb.MebUserPO">
+    update meb_user
+    set park_user_id = #{parkUserId,jdbcType=VARCHAR},
+    user_type = #{userType,jdbcType=INTEGER},
+    mobile_number = #{mobileNumber,jdbcType=VARCHAR},
+    mobile_code = #{mobileCode,jdbcType=VARCHAR},
+    user_nickname = #{userNickname,jdbcType=VARCHAR},
+    user_open_id = #{userOpenId,jdbcType=VARCHAR},
+    login_pwd = #{loginPwd,jdbcType=VARCHAR},
+    pay_pwd = #{payPwd,jdbcType=VARCHAR},
+    plate_number = #{plateNumber,jdbcType=VARCHAR},
+    user_true_name = #{userTrueName,jdbcType=VARCHAR},
+    user_idcard_number = #{userIdcardNumber,jdbcType=VARCHAR},
+    user_sex = #{userSex,jdbcType=INTEGER},
+    add_time = #{addTime,jdbcType=TIMESTAMP},
+    user_status = #{userStatus,jdbcType=INTEGER},
+    bank_type = #{bankType,jdbcType=VARCHAR},
+    bank_card = #{bankCard,jdbcType=VARCHAR},
+    bank_phone = #{bankPhone,jdbcType=VARCHAR},
+    acct_status = #{acctStatus,jdbcType=VARCHAR},
+    cancel_time = #{cancelTime,jdbcType=TIMESTAMP},
+    memo = #{memo,jdbcType=VARCHAR},
+    is_bind_bank = #{isBindBank,jdbcType=BIT},
+    illegal_times = #{illegalTimes,jdbcType=INTEGER},
+    mobile_operator = #{mobileOperator,jdbcType=VARCHAR},
+    number_attribution = #{numberAttribution,jdbcType=VARCHAR},
+    mobile_models = #{mobileModels,jdbcType=VARCHAR},
+    mobile_system = #{mobileSystem,jdbcType=VARCHAR},
+    app_version = #{appVersion,jdbcType=VARCHAR},
+    is_special = #{isSpecial,jdbcType=INTEGER},
+    idcard_scan_file_path = #{idcardScanFilePath,jdbcType=VARCHAR},
+    idcard_scan_anti_file_path = #{idcardScanAntiFilePath,jdbcType=VARCHAR},
+    if_first_top_eccancy = #{ifFirstTopEccancy,jdbcType=INTEGER}
+    where meb_user_id = #{mebUserId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByDto" parameterType="com.park.cloud.common.domain.dto.cms.CmsMebUserDto"
+          resultType="com.park.cloud.common.domain.vo.cms.CmsMebUserVO">
+    SELECT
+    mu.meb_user_id as mebUserId
+    ,mu.park_user_id as parkUserId
+    ,mu.user_type AS userType
+    ,mu.user_nickname as userNickname
+    ,mu.mobile_number as mobileNumber
+    ,mo.overage_price as overagePrice
+    ,mu.user_open_id as userOpenId
+    ,mu.add_time as addTime
+    ,mb.plate_number as plateNumber
+    ,mb.plate_type as plateType
+    FROM meb_user mu
+    left join meb_overage mo on mu.park_user_id = mo.park_user_id
+    left join meb_bind_vehicle_info mb on mb.meb_bind_vehicle_info_id = (select b.meb_bind_vehicle_info_id from meb_bind_vehicle_info b where b.park_user_id = mu.park_user_id and b.bind_status = 1 order by b.add_time desc limit 1)
+    <where>
+      1=1
+      <if test="mobileNumber != null and mobileNumber !=''">
+        and mu.mobile_number like CONCAT('%',#{mobileNumber},'%')
+      </if>
+      <if test="plateNumber != null and plateNumber !=''">
+        and mb.plate_number like CONCAT('%',#{plateNumber},'%')
+      </if>
+      <if test="startTime != null">
+        and mu.add_time >= #{startTime}
+      </if>
+      <if test="endTime != null">
+        and mu.add_time &lt;= #{endTime}
+      </if>
+      <if test="userType != null">
+        and mu.user_type = #{userType}
+      </if>
+    </where>
+    order by mu.add_time desc
+  </select>
+
+</mapper>

@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.OpmPeccancyFinePOMapper">
+  <resultMap id="BaseResultMap" type="com.park.cloud.common.domain.po.opm.OpmPeccancyFinePO">
+    <id column="pecc_fine_id" jdbcType="BIGINT" property="peccFineId" />
+    <result column="pecc_pice_code" jdbcType="VARCHAR" property="peccPiceCode" />
+    <result column="in_peccancy_code" jdbcType="VARCHAR" property="inPeccancyCode" />
+    <result column="berth_code" jdbcType="VARCHAR" property="berthCode" />
+    <result column="in_peccancy_plate_number" jdbcType="INTEGER" property="inPeccancyPlateNumber" />
+    <result column="berth_start_parking_time" jdbcType="TIMESTAMP" property="berthStartParkingTime" />
+    <result column="berth_end_parking_time" jdbcType="TIMESTAMP" property="berthEndParkingTime" />
+    <result column="fine_status" jdbcType="INTEGER" property="fineStatus" />
+    <result column="is_pay" jdbcType="INTEGER" property="isPay" />
+    <result column="pecc_date" jdbcType="TIMESTAMP" property="peccDate" />
+    <result column="park_duration" jdbcType="VARCHAR" property="parkDuration" />
+    <result column="pay_date" jdbcType="TIMESTAMP" property="payDate" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="arrears_price" jdbcType="DECIMAL" property="arrearsPrice" />
+    <result column="pda_user_name" jdbcType="VARCHAR" property="pdaUserName" />
+    <result column="park_user_id" jdbcType="VARCHAR" property="parkUserId" />
+    <result column="is_free_plate_number" jdbcType="INTEGER" property="isFreePlateNumber" />
+    <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    pecc_fine_id, pecc_pice_code, in_peccancy_code, berth_code, in_peccancy_plate_number, 
+    berth_start_parking_time, berth_end_parking_time, fine_status, is_pay, pecc_date, 
+    park_duration, pay_date, add_time, arrears_price, pda_user_name, park_user_id, is_free_plate_number, 
+    city_code
+  </sql>
+  <select id="selectByExample" parameterType="com.park.cloud.common.domain.po.opm.OpmPeccancyFinePOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from opm_peccancy_fine
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from opm_peccancy_fine
+    where pecc_fine_id = #{peccFineId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from opm_peccancy_fine
+    where pecc_fine_id = #{peccFineId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.park.cloud.common.domain.po.opm.OpmPeccancyFinePOExample">
+    delete from opm_peccancy_fine
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.park.cloud.common.domain.po.opm.OpmPeccancyFinePO">
+    insert into opm_peccancy_fine (pecc_fine_id, pecc_pice_code, in_peccancy_code, 
+      berth_code, in_peccancy_plate_number, berth_start_parking_time, 
+      berth_end_parking_time, fine_status, is_pay, 
+      pecc_date, park_duration, pay_date, 
+      add_time, arrears_price, pda_user_name, 
+      park_user_id, is_free_plate_number, city_code
+      )
+    values (#{peccFineId,jdbcType=BIGINT}, #{peccPiceCode,jdbcType=VARCHAR}, #{inPeccancyCode,jdbcType=VARCHAR}, 
+      #{berthCode,jdbcType=VARCHAR}, #{inPeccancyPlateNumber,jdbcType=INTEGER}, #{berthStartParkingTime,jdbcType=TIMESTAMP}, 
+      #{berthEndParkingTime,jdbcType=TIMESTAMP}, #{fineStatus,jdbcType=INTEGER}, #{isPay,jdbcType=INTEGER}, 
+      #{peccDate,jdbcType=TIMESTAMP}, #{parkDuration,jdbcType=VARCHAR}, #{payDate,jdbcType=TIMESTAMP}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{arrearsPrice,jdbcType=DECIMAL}, #{pdaUserName,jdbcType=VARCHAR}, 
+      #{parkUserId,jdbcType=VARCHAR}, #{isFreePlateNumber,jdbcType=INTEGER}, #{cityCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.park.cloud.common.domain.po.opm.OpmPeccancyFinePO">
+    insert into opm_peccancy_fine
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="peccFineId != null">
+        pecc_fine_id,
+      </if>
+      <if test="peccPiceCode != null">
+        pecc_pice_code,
+      </if>
+      <if test="inPeccancyCode != null">
+        in_peccancy_code,
+      </if>
+      <if test="berthCode != null">
+        berth_code,
+      </if>
+      <if test="inPeccancyPlateNumber != null">
+        in_peccancy_plate_number,
+      </if>
+      <if test="berthStartParkingTime != null">
+        berth_start_parking_time,
+      </if>
+      <if test="berthEndParkingTime != null">
+        berth_end_parking_time,
+      </if>
+      <if test="fineStatus != null">
+        fine_status,
+      </if>
+      <if test="isPay != null">
+        is_pay,
+      </if>
+      <if test="peccDate != null">
+        pecc_date,
+      </if>
+      <if test="parkDuration != null">
+        park_duration,
+      </if>
+      <if test="payDate != null">
+        pay_date,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="arrearsPrice != null">
+        arrears_price,
+      </if>
+      <if test="pdaUserName != null">
+        pda_user_name,
+      </if>
+      <if test="parkUserId != null">
+        park_user_id,
+      </if>
+      <if test="isFreePlateNumber != null">
+        is_free_plate_number,
+      </if>
+      <if test="cityCode != null">
+        city_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="peccFineId != null">
+        #{peccFineId,jdbcType=BIGINT},
+      </if>
+      <if test="peccPiceCode != null">
+        #{peccPiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="inPeccancyCode != null">
+        #{inPeccancyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="berthCode != null">
+        #{berthCode,jdbcType=VARCHAR},
+      </if>
+      <if test="inPeccancyPlateNumber != null">
+        #{inPeccancyPlateNumber,jdbcType=INTEGER},
+      </if>
+      <if test="berthStartParkingTime != null">
+        #{berthStartParkingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="berthEndParkingTime != null">
+        #{berthEndParkingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fineStatus != null">
+        #{fineStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isPay != null">
+        #{isPay,jdbcType=INTEGER},
+      </if>
+      <if test="peccDate != null">
+        #{peccDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="parkDuration != null">
+        #{parkDuration,jdbcType=VARCHAR},
+      </if>
+      <if test="payDate != null">
+        #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="arrearsPrice != null">
+        #{arrearsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="pdaUserName != null">
+        #{pdaUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="parkUserId != null">
+        #{parkUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="isFreePlateNumber != null">
+        #{isFreePlateNumber,jdbcType=INTEGER},
+      </if>
+      <if test="cityCode != null">
+        #{cityCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.park.cloud.common.domain.po.opm.OpmPeccancyFinePOExample" resultType="java.lang.Long">
+    select count(*) from opm_peccancy_fine
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update opm_peccancy_fine
+    <set>
+      <if test="record.peccFineId != null">
+        pecc_fine_id = #{record.peccFineId,jdbcType=BIGINT},
+      </if>
+      <if test="record.peccPiceCode != null">
+        pecc_pice_code = #{record.peccPiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inPeccancyCode != null">
+        in_peccancy_code = #{record.inPeccancyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.berthCode != null">
+        berth_code = #{record.berthCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inPeccancyPlateNumber != null">
+        in_peccancy_plate_number = #{record.inPeccancyPlateNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.berthStartParkingTime != null">
+        berth_start_parking_time = #{record.berthStartParkingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.berthEndParkingTime != null">
+        berth_end_parking_time = #{record.berthEndParkingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fineStatus != null">
+        fine_status = #{record.fineStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.isPay != null">
+        is_pay = #{record.isPay,jdbcType=INTEGER},
+      </if>
+      <if test="record.peccDate != null">
+        pecc_date = #{record.peccDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.parkDuration != null">
+        park_duration = #{record.parkDuration,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payDate != null">
+        pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addTime != null">
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.arrearsPrice != null">
+        arrears_price = #{record.arrearsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.pdaUserName != null">
+        pda_user_name = #{record.pdaUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parkUserId != null">
+        park_user_id = #{record.parkUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isFreePlateNumber != null">
+        is_free_plate_number = #{record.isFreePlateNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.cityCode != null">
+        city_code = #{record.cityCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update opm_peccancy_fine
+    set pecc_fine_id = #{record.peccFineId,jdbcType=BIGINT},
+      pecc_pice_code = #{record.peccPiceCode,jdbcType=VARCHAR},
+      in_peccancy_code = #{record.inPeccancyCode,jdbcType=VARCHAR},
+      berth_code = #{record.berthCode,jdbcType=VARCHAR},
+      in_peccancy_plate_number = #{record.inPeccancyPlateNumber,jdbcType=INTEGER},
+      berth_start_parking_time = #{record.berthStartParkingTime,jdbcType=TIMESTAMP},
+      berth_end_parking_time = #{record.berthEndParkingTime,jdbcType=TIMESTAMP},
+      fine_status = #{record.fineStatus,jdbcType=INTEGER},
+      is_pay = #{record.isPay,jdbcType=INTEGER},
+      pecc_date = #{record.peccDate,jdbcType=TIMESTAMP},
+      park_duration = #{record.parkDuration,jdbcType=VARCHAR},
+      pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      arrears_price = #{record.arrearsPrice,jdbcType=DECIMAL},
+      pda_user_name = #{record.pdaUserName,jdbcType=VARCHAR},
+      park_user_id = #{record.parkUserId,jdbcType=VARCHAR},
+      is_free_plate_number = #{record.isFreePlateNumber,jdbcType=INTEGER},
+      city_code = #{record.cityCode,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.park.cloud.common.domain.po.opm.OpmPeccancyFinePO">
+    update opm_peccancy_fine
+    <set>
+      <if test="peccPiceCode != null">
+        pecc_pice_code = #{peccPiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="inPeccancyCode != null">
+        in_peccancy_code = #{inPeccancyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="berthCode != null">
+        berth_code = #{berthCode,jdbcType=VARCHAR},
+      </if>
+      <if test="inPeccancyPlateNumber != null">
+        in_peccancy_plate_number = #{inPeccancyPlateNumber,jdbcType=INTEGER},
+      </if>
+      <if test="berthStartParkingTime != null">
+        berth_start_parking_time = #{berthStartParkingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="berthEndParkingTime != null">
+        berth_end_parking_time = #{berthEndParkingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fineStatus != null">
+        fine_status = #{fineStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isPay != null">
+        is_pay = #{isPay,jdbcType=INTEGER},
+      </if>
+      <if test="peccDate != null">
+        pecc_date = #{peccDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="parkDuration != null">
+        park_duration = #{parkDuration,jdbcType=VARCHAR},
+      </if>
+      <if test="payDate != null">
+        pay_date = #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="arrearsPrice != null">
+        arrears_price = #{arrearsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="pdaUserName != null">
+        pda_user_name = #{pdaUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="parkUserId != null">
+        park_user_id = #{parkUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="isFreePlateNumber != null">
+        is_free_plate_number = #{isFreePlateNumber,jdbcType=INTEGER},
+      </if>
+      <if test="cityCode != null">
+        city_code = #{cityCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pecc_fine_id = #{peccFineId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.park.cloud.common.domain.po.opm.OpmPeccancyFinePO">
+    update opm_peccancy_fine
+    set pecc_pice_code = #{peccPiceCode,jdbcType=VARCHAR},
+      in_peccancy_code = #{inPeccancyCode,jdbcType=VARCHAR},
+      berth_code = #{berthCode,jdbcType=VARCHAR},
+      in_peccancy_plate_number = #{inPeccancyPlateNumber,jdbcType=INTEGER},
+      berth_start_parking_time = #{berthStartParkingTime,jdbcType=TIMESTAMP},
+      berth_end_parking_time = #{berthEndParkingTime,jdbcType=TIMESTAMP},
+      fine_status = #{fineStatus,jdbcType=INTEGER},
+      is_pay = #{isPay,jdbcType=INTEGER},
+      pecc_date = #{peccDate,jdbcType=TIMESTAMP},
+      park_duration = #{parkDuration,jdbcType=VARCHAR},
+      pay_date = #{payDate,jdbcType=TIMESTAMP},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      arrears_price = #{arrearsPrice,jdbcType=DECIMAL},
+      pda_user_name = #{pdaUserName,jdbcType=VARCHAR},
+      park_user_id = #{parkUserId,jdbcType=VARCHAR},
+      is_free_plate_number = #{isFreePlateNumber,jdbcType=INTEGER},
+      city_code = #{cityCode,jdbcType=VARCHAR}
+    where pecc_fine_id = #{peccFineId,jdbcType=BIGINT}
+  </update>
+
+  <select id="search" parameterType="com.park.cloud.common.domain.params.cms.PeccancyFineSearchParams"
+        resultType="com.park.cloud.common.domain.vo.cms.PeccancyFineSearchVO">
+    SELECT
+        t1.pecc_fine_id peccFineId,
+        t1.pecc_pice_code peccPiceCode,
+        t1.in_peccancy_code inPeccancyCode,
+        t1.berth_code berthCode,
+        t1.in_peccancy_plate_number inPeccancyPlateNumber,
+        t1.is_pay isPay,
+        t1.pay_date payDate,
+        t1.pecc_date peccDate,
+        t1.fine_status fineStatus,
+        t1.arrears_price arrearsPrice,
+        t1.is_free_plate_number isFreePlateNumber,
+        t2.plate_type plateType
+    FROM
+        opm_peccancy_fine t1
+        LEFT JOIN meb_bind_vehicle_info t2 ON t1.in_peccancy_plate_number = t2.plate_number
+    <where>
+      <if test="peccPiceCode != null and peccPiceCode != ''">
+        t1.pecc_pice_code = #{peccPiceCode}
+      </if>
+      <if test="inPeccancyCode != null and inPeccancyCode != ''">
+        and t1.in_peccancy_code = #{inPeccancyCode}
+      </if>
+      <if test="inPeccancyPlateNumber != null ">
+        and t1.in_peccancy_plate_number = #{inPeccancyPlateNumber}
+      </if>
+      <if test="isFreePlateNumber != null">
+        and t1.is_free_plate_number = #{isFreePlateNumber}
+      </if>
+      <if test="berthCode != null and berthCode != ''">
+        and t1.berthCode = #{berthCode}
+      </if>
+      <if test="isPay != null ">
+        and t1.is_pay = #{isPay}
+      </if>
+      <if test="peccDateStart != null and peccDateEnd != null">
+        and t1.pecc_date BETWEEN #{addTimeStart} and #{addTimeEnd}
+      </if>
+      <if test="fineStatus != null">
+        and t1.fine_status = #{fineStatus}
+      </if>
+    </where>
+    order by t1.add_time
+  </select>
+</mapper>

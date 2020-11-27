@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.ParkingDiagramMapper">
+    <resultMap id="SaturationResultMap" type="com.park.cloud.common.domain.vo.cms.ParkingSaturationVO">
+        <result column="parking_name" property="parkingName"/>
+        <result column="current_parking_no" property="currentParkingNo"/>
+        <result column="saturation" property="saturation"/>
+        <result column="total_parking_no" property="totalParkingNo"/>
+        <result column="parkingRatio" property="parkingRatio"/>
+    </resultMap>
+
+    <select id="selectParking" parameterType="com.park.cloud.common.domain.dto.cms.OverviewDto"
+            resultType="com.park.cloud.common.domain.vo.cms.ParkingDiagramVO">
+        select
+        ifnull((select count(*) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            to_days(a.add_time) = to_days(now()) and a.order_status = 1
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ), 0) as currentCarParkNo,
+        parking_name as parkingName,
+        current_parking_no as currentParkingNo,
+        total_parking_no as totalParkingNo,
+        longitude,
+        latitude,
+        saturation
+        from dict_parking_city
+        <where>
+            <if test="loginUserAreaAssType == 1">
+                and city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+    </select>
+    <select id="selectSaturation" parameterType="com.park.cloud.common.domain.dto.cms.OverviewDto"
+            resultMap="SaturationResultMap">
+        select parking_name, ifnull(current_parking_no, 0) as current_parking_no, ifnull(saturation, 0) as saturation, ifnull(total_parking_no, 0) as total_parking_no, if(isnull(total_parking_no), 0, count(*) / total_parking_no) as parkingRatio
+        from dict_parking_city a
+        left join tra_bargain_order b on a.park_code = b.park_code
+        <where>
+            <if test="loginUserAreaAssType == 1">
+                and a.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and a.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and a.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        group by a.parking_id
+    </select>
+    <select id="selectParkingAmount" parameterType="com.park.cloud.common.domain.dto.cms.OverviewDto"
+            resultType="com.park.cloud.common.domain.vo.cms.ParkingAmountVO">
+        select
+        ifnull((select sum(a.pay_charge) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            to_days(a.add_time) = to_days(now())
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ), 0) as parkingAmount,
+        ifnull((select sum(a.pay_charge) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            to_days(a.add_time) = to_days(now()) and a.bargain_order_type = 0
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ), 0) as offRoadParkingAmount,
+        ifnull((select sum(a.pay_charge) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            to_days(a.add_time) = to_days(now()) and a.bargain_order_type = 1
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ), 0) as curbParkingAmount,
+        ifnull((select count(*) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            to_days(a.add_time) = to_days(now())
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ), 0) as parkingCount,
+        ifnull((select count(*) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            to_days(a.add_time) = to_days(now()) and a.bargain_order_type = 0
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ), 0) as offRoadParkingCount,
+        ifnull((select count(*) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            to_days(a.add_time) = to_days(now()) and a.bargain_order_type = 1
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ), 0) as curbParkingCount,
+        ifnull((select count(*) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            to_days(a.add_time) = to_days(now()) and a.order_status = 1
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ), 0) as currentParkingNo,
+        ifnull((select count(*) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            to_days(a.add_time) = to_days(now()) and a.order_status = 1 and a.bargain_order_type = 1
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ), 0) as currentOffRoadParkingNo,
+        ifnull((select count(*) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            to_days(a.add_time) = to_days(now()) and a.order_status = 1 and a.bargain_order_type = 1
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ), 0) as currentCurbParkingNo,
+        ifnull((select sum(total_parking_no) from dict_parking_city
+        <where>
+            <if test="loginUserAreaAssType == 1">
+                and city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ), 0) as parkingNo,
+        ifnull((select sum(total_parking_no) from dict_parking_city
+        <where>
+            parking_type = 0
+            <if test="loginUserAreaAssType == 1">
+                and city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ), 0) as offRoadParkingNo,
+        ifnull((select sum(total_parking_no) from dict_parking_city
+        <where>
+            parking_type = 1
+            <if test="loginUserAreaAssType == 1">
+                and city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ), 0) as curbParkingNo
+    </select>
+    <select id="selectParkingAmountThisMonth" parameterType="com.park.cloud.common.domain.dto.cms.OverviewDto"
+            resultType="com.park.cloud.common.domain.vo.cms.ParkingAmountDayVO">
+        select ANY_VALUE(DATE_FORMAT(a.add_time, '%m-%d')) as date, ifnull(sum(a.pay_charge), 0) as dayAmount
+        from tra_bargain_order a
+                 left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            DATE_FORMAT(a.add_time, '%Y%m') = DATE_FORMAT(CURDATE(), '%Y%m')
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        group by to_days(a.add_time)
+    </select>
+    <select id="selectParkingAmountLastMonth" parameterType="com.park.cloud.common.domain.dto.cms.OverviewDto"
+            resultType="com.park.cloud.common.domain.vo.cms.ParkingAmountDayVO">
+        select ANY_VALUE(DATE_FORMAT(a.add_time, '%m-%d')) as date, ifnull(sum(a.pay_charge), 0) as dayAmount
+        from tra_bargain_order a
+                 left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            PERIOD_DIFF(date_format(now(), '%Y%m'), date_format(a.add_time, '%Y%m')) = 1
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        group by to_days(a.add_time)
+    </select>
+    <select id="selectParkingAmountOffRoad" parameterType="com.park.cloud.common.domain.dto.cms.OverviewDto"
+            resultType="com.park.cloud.common.domain.vo.cms.ParkingAmountTimeVO">
+        select ANY_VALUE(DATE_FORMAT(a.add_time, '%k')) as hour, sum(a.pay_charge) hourAmount
+        from tra_bargain_order a
+                 left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            bargain_order_type = 0 and to_days(a.add_time) = to_days(now())
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        group by hour(a.add_time)
+    </select>
+    <select id="selectParkingAmountCurb" parameterType="com.park.cloud.common.domain.dto.cms.OverviewDto"
+            resultType="com.park.cloud.common.domain.vo.cms.ParkingAmountTimeVO">
+        select ANY_VALUE(DATE_FORMAT(a.add_time, '%k')) as hour, sum(a.pay_charge) hourAmount
+        from tra_bargain_order a
+                 left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            a.bargain_order_type = 1 and to_days(a.add_time) = to_days(now())
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        group by hour(a.add_time)
+    </select>
+    <select id="selectParkingCountOffRoad" parameterType="com.park.cloud.common.domain.dto.cms.OverviewDto"
+            resultType="com.park.cloud.common.domain.vo.cms.ParkingCountTimeVO">
+        select ANY_VALUE(DATE_FORMAT(a.add_time, '%k')) as hour, count(*) as hourCount
+        from tra_bargain_order a
+        inner join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            a.bargain_order_type = 0 and to_days(a.add_time) = to_days(now()) and a.order_status = 1
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        group by hour(a.add_time)
+    </select>
+    <select id="selectParkingCountCurb" parameterType="com.park.cloud.common.domain.dto.cms.OverviewDto"
+            resultType="com.park.cloud.common.domain.vo.cms.ParkingCountTimeVO">
+        select ANY_VALUE(DATE_FORMAT(a.add_time, '%k')) as hour, count(*) as hourCount
+        from tra_bargain_order a
+        inner join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            a.bargain_order_type = 1 and to_days(a.add_time) = to_days(now()) and a.order_status = 1
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        group by hour(a.add_time)
+    </select>
+    <select id="selectParkingType" parameterType="com.park.cloud.common.domain.dto.cms.OverviewDto"
+            resultType="com.park.cloud.common.domain.vo.cms.ParkingTypeVO">
+        select
+        (select count(*) from dict_parking_city where parking_type = 0
+        <if test="loginUserAreaAssType == 1">
+            and city_id in (${loginUserCityIds})
+        </if>
+        <if test="loginUserAreaAssType == 2">
+            and city_id in (select distinct ca.city_id
+            from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+        </if>
+        <if test="loginUserAreaAssType == 3">
+            and city_id in (select distinct ca.city_id
+            from dict_canton ca, dict_area cb
+            where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+        </if>
+        ) as offRoadCount,
+        (select count(*) from dict_parking_city where parking_type = 1
+        <if test="loginUserAreaAssType == 1">
+            and city_id in (${loginUserCityIds})
+        </if>
+        <if test="loginUserAreaAssType == 2">
+            and city_id in (select distinct ca.city_id
+            from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+        </if>
+        <if test="loginUserAreaAssType == 3">
+            and city_id in (select distinct ca.city_id
+            from dict_canton ca, dict_area cb
+            where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+        </if>
+        ) as curbCount
+
+    </select>
+    <select id="selectParkingService" parameterType="com.park.cloud.common.domain.dto.cms.OverviewDto"
+            resultType="com.park.cloud.common.domain.vo.cms.ParkingServiceVO">
+        select (select sum(arrears_price) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            <if test="loginUserAreaAssType == 1">
+                b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ) as arrearsPrice,
+        (select sum(pay_charge) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            pay_type = 0
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ) as padAmount,
+        (select sum(pay_charge) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            pay_type = 1
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ) as balanceAmount,
+        (select sum(pay_charge) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            pay_type = 2
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ) as weChatAmount,
+        (select sum(pay_charge) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            pay_type = 3
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ) as aliPayAmoun,
+        (select sum(pay_charge) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            pay_type = 4
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ) as cmbAmount,
+        (select sum(pay_charge) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            pay_type = 5
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ) as offLineAmount
+    </select>
+    <select id="selectParkingTime" parameterType="com.park.cloud.common.domain.dto.cms.OverviewDto"
+            resultType="com.park.cloud.common.domain.vo.cms.ParkingTimeVO">
+        select (select count(*) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            a.park_time between 0 and 0.5 * 60 and a.order_status = 2
+            and to_days(a.add_time) = to_days(now())
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ) as timeOne,
+        (select count(*) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            a.park_time between 0.5*60 and 1*60 and a.order_status = 2
+            and to_days(a.add_time) = to_days(now())
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ) as timeTwo,
+        (select count(*) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            a.park_time between 1*60 and 2*60 and a.order_status = 2
+            and to_days(a.add_time) = to_days(now())
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ) as timeThree,
+        (select count(*) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            a.park_time between 2*60 and 3*60 and a.order_status = 2
+            and to_days(a.add_time) = to_days(now())
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ) as timeFour,
+        (select count(*) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            a.park_time between 3*60 and 4*60 and a.order_status = 2
+            and to_days(a.add_time) = to_days(now())
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ) as timeFive,
+        (select count(*) from tra_bargain_order a
+        left join dict_parking_city b on a.park_code = b.park_code
+        <where>
+            a.park_time > 4 * 60 and a.order_status = 2
+            and to_days(a.add_time) = to_days(now())
+            <if test="loginUserAreaAssType == 1">
+                and b.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and b.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        ) as timeSix
+    </select>
+    <select id="selectParkingAmountAll" parameterType="com.park.cloud.common.domain.dto.cms.OverviewDto"
+            resultType="com.park.cloud.common.domain.vo.cms.ParkingAmountAllVO">
+        select ANY_VALUE(a.parking_name) as parkingName, sum(b.pay_charge) as payCharge
+        from dict_parking_city a
+                 inner join tra_bargain_order b on a.park_code = b.park_code
+        <where>
+            <if test="loginUserAreaAssType == 1">
+                and a.city_id in (${loginUserCityIds})
+            </if>
+            <if test="loginUserAreaAssType == 2">
+                and a.city_id in (select distinct ca.city_id
+                from dict_canton ca where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            <if test="loginUserAreaAssType == 3">
+                and a.city_id in (select distinct ca.city_id
+                from dict_canton ca, dict_area cb
+                where ca.canton_id = cb.canton_id and cb.area_id in (${loginUserAreaIds}))
+            </if>
+        </where>
+        group by a.parking_id
+    </select>
+
+    <select id="selectParkingLatLng" parameterType="com.park.cloud.common.domain.dto.cms.OverviewDto"
+            resultType="com.park.cloud.common.domain.vo.cms.ParkingDiagramInfoVO">
+        <if test="loginUserAreaAssType == 1">
+            select city_lat as lat, city_lng as lng
+            from dict_city
+            <if test="loginUserCityIds != null and loginUserCityIds != ''">
+                where city_id in (${loginUserCityIds})
+            </if>
+            limit 1
+        </if>
+        <if test="loginUserAreaAssType == 2">
+            select canton_lat as lat, canton_lng as lng
+            from dict_canton ca
+            <if test="loginUserCantonIds != null and loginUserCantonIds != ''">
+                where ca.canton_id in (${loginUserCantonIds}))
+            </if>
+            limit 1
+        </if>
+        <if test="loginUserAreaAssType == null or loginUserAreaAssType == 0">
+            select city_lat as lat, city_lng as lng
+            from dict_city
+            <if test="loginUserCityIds != null and loginUserCityIds != ''">
+                where city_id in (${loginUserCityIds})
+            </if>
+            limit 1
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.SysPdaUserSignMapper">
+    <resultMap id="SysPdaUserSignResultMap" type="com.park.cloud.common.domain.po.sys.SysPdaUserSignPO">
+        <id column="id" property="id"/>
+        <result column="pda_user_id" property="pdaUserId"/>
+        <result column="pda_schedule_name" property="pdaScheduleName"/>
+        <result column="sign_type" property="signType"/>
+        <result column="sign_time" property="signTime"/>
+        <result column="sign_result" property="signResult"/>
+        <result column="sign_img" property="signImg"/>
+        <result column="pda_user_true_name" property="pdaUserTrueName"/>
+        <result column="team_name" property="teamName"/>
+        <result column="canton_name" property="cantonName"/>
+    </resultMap>
+    <select id="selectUserSign" parameterType="com.park.cloud.common.domain.dto.cms.SysPdaUserSignDto"
+            resultMap="SysPdaUserSignResultMap">
+        select a.id,
+               a.pda_user_id,
+               a.pda_schedule_name,
+               a.sign_type,
+               a.sign_time,
+               a.sign_result,
+               a.sign_img,
+               b.pda_user_true_name,
+               c.team_name,
+               d.canton_name
+        from sys_pda_user_sign a
+        left join sys_pda_user b on a.pda_user_id = b.pda_user_id
+        left join sys_pda_user_team c on b.pda_user_team_id = c.pda_user_team_id
+        left join dict_canton d on c.canton_id = d.canton_id
+        <where>
+            <if test="pdaUserId != null and pdaUserId != ''">
+                a.pda_user_id = #{pdaUserId}
+            </if>
+            <if test="pdaUserTrueName != null and pdaUserTrueName != ''">
+                and b.pda_user_true_name = #{pdaUserTrueName}
+            </if>
+            <if test="cantonId != null">
+                and c.canton_id = #{cantonId}
+            </if>
+            <if test="areaId != null">
+                and c.area_id = #{areaId}
+            </if>
+            <if test="sectionId != null">
+                and c.section_id = #{sectionId}
+            </if>
+            <if test="pdaUserTeamId != null">
+                and c.pda_user_team_id = #{pdaUserTeamId}
+            </if>
+            <if test="signType != null">
+                and a.sign_type = #{signType}
+            </if>
+            <if test="signResult != null">
+                and a.sign_result = #{signResult}
+            </if>
+            <if test="signStartTime != null and signEndTime != null">
+                and (a.sign_time between #{signStartTime} and #{signEndTime})
+            </if>
+        </where>
+    </select>
+
+</mapper>

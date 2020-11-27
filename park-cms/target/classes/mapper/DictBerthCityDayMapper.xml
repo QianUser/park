@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.DictBerthCityDayMapper">
+    <resultMap id="DictBerthCityDayResultMap" type="com.park.cloud.common.domain.po.dict.DictBerthCityDayPO">
+        <id column="sectionId" property="sectionId"/>
+        <result column="sectionName" property="sectionName"/>
+        <result column="berthCode" property="berthCode"/>
+        <result column="parkTime" property="parkTime"/>
+    </resultMap>
+    <select id="selectBerthCityDay" parameterType="com.park.cloud.common.domain.dto.cms.DictBerthCityDayDto"
+            resultMap="DictBerthCityDayResultMap">
+        select ANY_VALUE(b.section_name) as sectionName,
+        ANY_VALUE(b.section_id) as sectionId,
+        ANY_VALUE(a.berth_code) as berthCode,
+        ifnull(sum(c.park_time), 0) as parkTime,
+        ifnull(sum(c.park_time) / (24 * 60), 0) as occupyRate
+        from dict_berth_city a
+        left join dict_section b
+            on a.section_id = b.section_id
+        left join (select add_time, park_time, berth_code from tra_bargain_order where to_days(add_time) = to_days(now()) or add_time is null) c
+            on a.berth_code = c.berth_code
+        <where>
+            a.berth_status = 3
+            <if test="berthCode != null and berthCode != ''">
+                and a.berth_code = #{berthCode}
+            </if>
+            <if test="sectionId != null and sectionId != ''">
+                and a.section_id = #{sectionId}
+            </if>
+        </where>
+        group by a.berth_code
+    </select>
+
+</mapper>

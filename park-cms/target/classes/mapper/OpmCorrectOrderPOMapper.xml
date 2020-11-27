@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.OpmCorrectOrderPOMapper">
+  <resultMap id="BaseResultMap" type="com.park.cloud.common.domain.po.opm.OpmCorrectOrderPO">
+    <id column="correct_id" jdbcType="INTEGER" property="correctId" />
+    <result column="correct _code" jdbcType="VARCHAR" property="correctCode" />
+    <result column="berth_code" jdbcType="VARCHAR" property="berthCode" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="xj_id" jdbcType="INTEGER" property="xjId" />
+    <result column="add_time" jdbcType="DATE" property="addTime" />
+    <result column="park_status" jdbcType="INTEGER" property="parkStatus" />
+    <result column="correct_state" jdbcType="INTEGER" property="correctState" />
+    <result column="audit_time" jdbcType="DATE" property="auditTime" />
+    <result column="audit_user_id" jdbcType="INTEGER" property="auditUserId" />
+    <result column="audit_state" jdbcType="INTEGER" property="auditState" />
+    <result column="down_state" jdbcType="INTEGER" property="downState" />
+    <result column="result_state" jdbcType="INTEGER" property="resultState" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    correct_id, "correct _code", berth_code, area_code, xj_id, add_time, park_status, 
+    correct_state, audit_time, audit_user_id, audit_state, down_state, result_state
+  </sql>
+  <select id="selectByExample" parameterType="com.park.cloud.common.domain.po.opm.OpmCorrectOrderPOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from opm_correct_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from opm_correct_order
+    where correct_id = #{correctId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from opm_correct_order
+    where correct_id = #{correctId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.park.cloud.common.domain.po.opm.OpmCorrectOrderPOExample">
+    delete from opm_correct_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.park.cloud.common.domain.po.opm.OpmCorrectOrderPO">
+    insert into opm_correct_order (correct_id, "correct _code", berth_code, 
+      area_code, xj_id, add_time, 
+      park_status, correct_state, audit_time, 
+      audit_user_id, audit_state, down_state, 
+      result_state)
+    values (#{correctId,jdbcType=INTEGER}, #{correctCode,jdbcType=VARCHAR}, #{berthCode,jdbcType=VARCHAR}, 
+      #{areaCode,jdbcType=VARCHAR}, #{xjId,jdbcType=INTEGER}, #{addTime,jdbcType=DATE}, 
+      #{parkStatus,jdbcType=INTEGER}, #{correctState,jdbcType=INTEGER}, #{auditTime,jdbcType=DATE}, 
+      #{auditUserId,jdbcType=INTEGER}, #{auditState,jdbcType=INTEGER}, #{downState,jdbcType=INTEGER}, 
+      #{resultState,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.park.cloud.common.domain.po.opm.OpmCorrectOrderPO">
+    insert into opm_correct_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="correctId != null">
+        correct_id,
+      </if>
+      <if test="correctCode != null">
+        "correct _code",
+      </if>
+      <if test="berthCode != null">
+        berth_code,
+      </if>
+      <if test="areaCode != null">
+        area_code,
+      </if>
+      <if test="xjId != null">
+        xj_id,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="parkStatus != null">
+        park_status,
+      </if>
+      <if test="correctState != null">
+        correct_state,
+      </if>
+      <if test="auditTime != null">
+        audit_time,
+      </if>
+      <if test="auditUserId != null">
+        audit_user_id,
+      </if>
+      <if test="auditState != null">
+        audit_state,
+      </if>
+      <if test="downState != null">
+        down_state,
+      </if>
+      <if test="resultState != null">
+        result_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="correctId != null">
+        #{correctId,jdbcType=INTEGER},
+      </if>
+      <if test="correctCode != null">
+        #{correctCode,jdbcType=VARCHAR},
+      </if>
+      <if test="berthCode != null">
+        #{berthCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="xjId != null">
+        #{xjId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=DATE},
+      </if>
+      <if test="parkStatus != null">
+        #{parkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="correctState != null">
+        #{correctState,jdbcType=INTEGER},
+      </if>
+      <if test="auditTime != null">
+        #{auditTime,jdbcType=DATE},
+      </if>
+      <if test="auditUserId != null">
+        #{auditUserId,jdbcType=INTEGER},
+      </if>
+      <if test="auditState != null">
+        #{auditState,jdbcType=INTEGER},
+      </if>
+      <if test="downState != null">
+        #{downState,jdbcType=INTEGER},
+      </if>
+      <if test="resultState != null">
+        #{resultState,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.park.cloud.common.domain.po.opm.OpmCorrectOrderPOExample" resultType="java.lang.Long">
+    select count(*) from opm_correct_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update opm_correct_order
+    <set>
+      <if test="record.correctId != null">
+        correct_id = #{record.correctId,jdbcType=INTEGER},
+      </if>
+      <if test="record.correctCode != null">
+        "correct _code" = #{record.correctCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.berthCode != null">
+        berth_code = #{record.berthCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areaCode != null">
+        area_code = #{record.areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.xjId != null">
+        xj_id = #{record.xjId,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null">
+        add_time = #{record.addTime,jdbcType=DATE},
+      </if>
+      <if test="record.parkStatus != null">
+        park_status = #{record.parkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.correctState != null">
+        correct_state = #{record.correctState,jdbcType=INTEGER},
+      </if>
+      <if test="record.auditTime != null">
+        audit_time = #{record.auditTime,jdbcType=DATE},
+      </if>
+      <if test="record.auditUserId != null">
+        audit_user_id = #{record.auditUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.auditState != null">
+        audit_state = #{record.auditState,jdbcType=INTEGER},
+      </if>
+      <if test="record.downState != null">
+        down_state = #{record.downState,jdbcType=INTEGER},
+      </if>
+      <if test="record.resultState != null">
+        result_state = #{record.resultState,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update opm_correct_order
+    set correct_id = #{record.correctId,jdbcType=INTEGER},
+      "correct _code" = #{record.correctCode,jdbcType=VARCHAR},
+      berth_code = #{record.berthCode,jdbcType=VARCHAR},
+      area_code = #{record.areaCode,jdbcType=VARCHAR},
+      xj_id = #{record.xjId,jdbcType=INTEGER},
+      add_time = #{record.addTime,jdbcType=DATE},
+      park_status = #{record.parkStatus,jdbcType=INTEGER},
+      correct_state = #{record.correctState,jdbcType=INTEGER},
+      audit_time = #{record.auditTime,jdbcType=DATE},
+      audit_user_id = #{record.auditUserId,jdbcType=INTEGER},
+      audit_state = #{record.auditState,jdbcType=INTEGER},
+      down_state = #{record.downState,jdbcType=INTEGER},
+      result_state = #{record.resultState,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.park.cloud.common.domain.po.opm.OpmCorrectOrderPO">
+    update opm_correct_order
+    <set>
+      <if test="correctCode != null">
+        "correct _code" = #{correctCode,jdbcType=VARCHAR},
+      </if>
+      <if test="berthCode != null">
+        berth_code = #{berthCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="xjId != null">
+        xj_id = #{xjId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=DATE},
+      </if>
+      <if test="parkStatus != null">
+        park_status = #{parkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="correctState != null">
+        correct_state = #{correctState,jdbcType=INTEGER},
+      </if>
+      <if test="auditTime != null">
+        audit_time = #{auditTime,jdbcType=DATE},
+      </if>
+      <if test="auditUserId != null">
+        audit_user_id = #{auditUserId,jdbcType=INTEGER},
+      </if>
+      <if test="auditState != null">
+        audit_state = #{auditState,jdbcType=INTEGER},
+      </if>
+      <if test="downState != null">
+        down_state = #{downState,jdbcType=INTEGER},
+      </if>
+      <if test="resultState != null">
+        result_state = #{resultState,jdbcType=INTEGER},
+      </if>
+    </set>
+    where correct_id = #{correctId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.park.cloud.common.domain.po.opm.OpmCorrectOrderPO">
+    update opm_correct_order
+    set "correct _code" = #{correctCode,jdbcType=VARCHAR},
+      berth_code = #{berthCode,jdbcType=VARCHAR},
+      area_code = #{areaCode,jdbcType=VARCHAR},
+      xj_id = #{xjId,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=DATE},
+      park_status = #{parkStatus,jdbcType=INTEGER},
+      correct_state = #{correctState,jdbcType=INTEGER},
+      audit_time = #{auditTime,jdbcType=DATE},
+      audit_user_id = #{auditUserId,jdbcType=INTEGER},
+      audit_state = #{auditState,jdbcType=INTEGER},
+      down_state = #{downState,jdbcType=INTEGER},
+      result_state = #{resultState,jdbcType=INTEGER}
+    where correct_id = #{correctId,jdbcType=INTEGER}
+  </update>
+
+  <select id="list" parameterType="com.park.cloud.common.domain.params.cms.OpmCorrectOrderListParams"
+          resultType="com.park.cloud.common.domain.vo.cms.OpmCorrectOrderVO">
+          SELECT
+              t1.correct_id correctId,
+              t1.`correct _code` correctCode,
+              t1.`correct _code` imgPath,
+              t1.berth_code berthCode,
+              t1.area_code areaCode,
+              t1.xj_id xjId,
+              t1.add_time addTime,
+              t1.park_status parkStatus,
+              t1.correct_state correctState,
+              t1.audit_time auditTime,
+              t1.audit_user_id auditUserId,
+              t1.audit_state auditState,
+              t1.down_state downState,
+              t1.result_state resultState,
+              t2.user_name auditUserName,
+              t3.user_nickname xjName,
+
+              CASE
+              t1.audit_state
+              WHEN 0 THEN
+              0
+              WHEN 1 THEN
+              IF
+              ( t1.park_status != t1.correct_state, 1, 2 ) ELSE NULL
+              END AS state
+          FROM
+            opm_correct_order t1
+          LEFT JOIN sys_user t2 ON t1.audit_user_id = t2.user_id
+          LEFT JOIN meb_user t3 ON t1.xj_id = t3.meb_user_id
+          <where>
+            <if test="berthCode != null and berthCode != ''">
+               and t1.berth_code = #{berthCode}
+            </if>
+            <if test="auditState != null and auditState == 0">
+               and  t1.audit_state = #{auditState}
+            </if>
+            <if test="auditState != null and auditState == 1">
+              and  t1.park_status != t1.correct_state
+            </if>
+            <if test="auditState != null and auditState == 2">
+              and  t1.park_status = t1.correct_state
+            </if>
+
+            <if test="startTime != null and endTime != null">
+              and t1.add_time BETWEEN #{startTime} and #{endTime}
+            </if>
+          </where>
+        order by t1.add_time desc
+  </select>
+</mapper>

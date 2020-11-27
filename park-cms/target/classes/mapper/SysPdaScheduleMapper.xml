@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.cloud.cms.mapper.SysPdaScheduleMapper">
+    <resultMap id="SysPdaScheduleResultMap" type="com.park.cloud.common.domain.po.sys.SysPdaSchedulePO">
+        <id column="pda_schedule_id" property="pdaScheduleId"/>
+        <result column="pda_schedule_name" property="pdaScheduleName"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+    <select id="selectSchedule" parameterType="com.park.cloud.common.domain.dto.cms.SysPdaScheduleDto"
+            resultMap="SysPdaScheduleResultMap">
+        select pda_schedule_id,
+               pda_schedule_name,
+               start_time,
+               end_time,
+               remark
+        from sys_pda_schedule
+        <where>
+            <if test="pdaScheduleName != null">
+                pda_schedule_name like concat('%', #{pdaScheduleName},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="SysPdaScheduleResultMap">
+        select pda_schedule_id,
+               pda_schedule_name,
+               start_time,
+               end_time,
+               remark
+        from sys_pda_schedule
+        where pda_schedule_id = #{pdaScheduleId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.park.cloud.common.domain.po.sys.SysPdaSchedulePO">
+        insert into sys_pda_schedule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pdaScheduleName != null">
+                pda_schedule_name,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="addUser != null">
+                add_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pdaScheduleName != null">
+                #{pdaScheduleName,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addUser != null">
+                #{addUser,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.park.cloud.common.domain.po.sys.SysPdaSchedulePO">
+        update sys_pda_schedule
+        <set>
+            <if test="pdaScheduleName != null">
+                pda_schedule_name = #{pdaScheduleName,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null">
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addUser != null">
+                add_user = #{addUser,jdbcType=INTEGER},
+            </if>
+        </set>
+        where pda_schedule_id = #{pdaScheduleId,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteByPrimaryKey" parameterType="com.park.cloud.common.domain.po.sys.SysPdaSchedulePO">
+        delete from sys_pda_schedule
+        where pda_schedule_id = #{pdaScheduleId,jdbcType=INTEGER}
+    </delete>
+
+</mapper>

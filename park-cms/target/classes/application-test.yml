@@ -1,0 +1,132 @@
+server:
+  port: 9002
+spring:
+  application:
+    name: park-cms-service
+# redis基础配置
+  redis:
+    database: 0
+    password: Wxjl!@8888
+    host: 192.168.2.183
+    port: 6379
+    # 连接超时时间 单位 ms（毫秒）
+    timeout: 3000
+    # redis线程池设置
+    jedis:
+      pool:
+        # 连接池中的最大空闲连接，默认值也是8。
+        max-idle: 500
+        # 连接池中的最小空闲连接，默认值也是0。
+        pool.min-idle: 50
+        # 如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)。
+        max-active: 2000
+        # 等待可用连接的最大时间，单位毫秒，默认值为-1，表示永不超时。如果超过等待时间，则直接抛出JedisConnectionException
+        max-wait: 1000
+  servlet:
+    #设置文件上传大小限制
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 15MB
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.2.183:3306/park_dev?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false
+    username: root
+    password: Wxjl!@8888
+
+    # druid
+    druid:
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      max-wait: 60000
+      remove-abandoned: true
+      remove-abandoned-timeout: 180
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: stat
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+#mybatis
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+  type-aliases-package: com.park.cloud.common.domain.po
+  config-location: classpath:mybatis/mybatis-config.xml
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://192.168.2.184:9000/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+
+# hystrix 断路器开启
+feign:
+  hystrix:
+    enabled: true
+    # hystrix 熔断机制
+    client:
+      config:
+      default:
+      connectTimeout: 10000
+      readTimeout: 160000
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            strategy: SEMAPHORE
+            timeoutInMilliseconds: 160000
+
+ribbon:
+  ReadTimeout: 120000
+  ConnectTimeout: 5000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
+
+http:
+  maxTotal: 200 #最大连接数
+  defaultMaxPerRoute: 100 #并发数
+  connectTimeout: 10000 #创建连接的最长时间
+  connectionRequestTimeout: 5000 #从连接池中获取到连接的最长时间
+  socketTimeout: 60000 #数据传输的最长时间
+  staleConnectionCheckEnabled: true #提交请求前测试连接是否可用
+
+###定时任务####
+xxl:
+  job:
+    admin:
+      ### 调度中心部署跟地址 [选填]：如调度中心集群部署存在多个地址则用逗号分隔。执行器将会使用该地址进行"执行器心跳注册"和"任务结果回调"；为空则关闭自动注册；
+      addresses: http://192.168.2.184:9888/xxl-job-admin
+    executor:
+      ### 执行器AppName [选填]：执行器心跳注册分组依据；为空则关闭自动注册
+      appname: park-cms-service
+      ### 执行器IP [选填]：默认为空表示自动获取IP，多网卡时可手动设置指定IP，该IP不会绑定Host仅作为通讯实用；地址信息用于 "执行器注册" 和 "调度中心请求并触发任务"；
+      ip:
+      ### 执行器端口号 [选填]：小于等于0则自动获取；默认端口为9999，单机部署多个执行器时，注意要配置不同执行器端口；
+      port: 9998
+      ### 执行器运行日志文件存储磁盘路径 [选填] ：需要对该路径拥有读写权限；为空则使用默认路径；
+      logpath: /data/park/logs/xxl-job
+      ### 执行器日志保存天数 [选填] ：值大于3时生效，启用执行器Log文件定期清理功能，否则不生效
+      logretentiondays: 7
+      ###执行器主键ID
+      jobGroup: 1
+      ### 用户名
+      username: admin
+      ###密码
+      password: zaq12wsx
+    ### 执行器通讯TOKEN [选填]：非空时启用；
+    accessToken: asdfjiuer345sfdd
+
+logging:
+  config: classpath:log4j2-test.yml

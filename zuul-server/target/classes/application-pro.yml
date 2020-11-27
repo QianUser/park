@@ -1,0 +1,97 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: zuul-server
+# redis基础配置
+  redis:
+    database: 0
+    password: DsDegjl@32
+    host: 10.213.244.251
+    port: 6379
+    # 连接超时时间 单位 ms（毫秒）
+    timeout: 3000
+    # redis线程池设置
+    jedis:
+      pool:
+        # 连接池中的最大空闲连接，默认值也是8。
+        max-idle: 500
+        # 连接池中的最小空闲连接，默认值也是0。
+        pool.min-idle: 50
+        # 如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)。
+        max-active: 2000
+        # 等待可用连接的最大时间，单位毫秒，默认值为-1，表示永不超时。如果超过等待时间，则直接抛出JedisConnectionException
+        max-wait: 1000
+  servlet:
+    #设置文件上传大小限制
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 150MB
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://10.213.244.251:9000/eureka/
+  instance:
+    prefer-ip-address: true
+    instanceId: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+zuul:
+  routes:
+    park-rule:
+      path: /park1.0/cms/rule/**
+      serviceId: park-rule-model
+    park-cms:
+      path: /park1.0/cms/**
+      serviceId: park-cms-service
+    park-user:
+      path: /park1.0/user/**
+      serviceId: park-user-service
+    park-device:
+      path: /park1.0/device/**
+      serviceId: park-device-service
+    park-pda:
+      path: /park1.0/pda/**
+      serviceId: park-pda-service
+    park-third:
+      path: /park1.0/third/**
+      serviceId: park-third-service
+    park-merchant:
+      path: /park1.0/merchant/**
+      serviceId: park-merchant-service
+    park-data:
+      path: /park1.0/data/**
+      serviceId: park-data-service
+    park-order:
+      path: /park1.0/order/**
+      serviceId: park-order-service
+
+
+#  host:
+#    socket-timeout-millis: 60000
+#    connect-timeout-millis: 10000
+
+# 设置zuul超时时间 当使用url时 使用上面配置，当使用服务id时，使用下面配置
+ribbon:
+  #连接超时时间,处理时间
+  ReadTimeout: 120000
+  #建立连接超时时间
+  ConnectTimeout: 10000
+  #单个节点重试最大值
+  MaxAutoRetries: 0
+  #重试发生，更换节点数最大值
+  MaxAutoRetriesNextServer: 1
+  #SocketTimeout: 60000
+
+# hystrix 熔断机制 timeout > (ribbonReadTimeout + ribbonConnectTimeout) * (maxAutoRetries + 1) * (maxAutoRetriesNextServer + 1)
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 300000
+swagger:
+  #是否开启swagger，正式环境一般是需要关闭的
+  enabled: true
+logging:
+  config: classpath:log4j2-test.yml
